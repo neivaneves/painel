@@ -1,10 +1,25 @@
 <template>
-	<v-card :max-height="400">
+	<v-card>
 		<ChartComponent
 			v-if="loaded"
 			:chartData="chartData"
 			:chartOptions="chartOptions"
 		></ChartComponent>
+		<v-card-actions>
+			<v-autocomplete
+				deletableChips
+				v-model="values"
+				:items="items"
+				chips
+				multiple
+				readonly
+				solo
+				hide-details
+				return-object
+				item-text="label"
+			>
+			</v-autocomplete>
+		</v-card-actions>
 	</v-card>
 </template>
 
@@ -18,6 +33,12 @@ export default {
 	},
 	data: () => ({
 		loaded: false,
+		values: {
+			label: "Brasil",
+		},
+		items: {
+			label: "Brasil",
+		},
 		chartData: null,
 		chartOptions: null,
 	}),

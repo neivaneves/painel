@@ -1,17 +1,24 @@
 <template>
 	<v-card>
-		<ChartComponent v-if="loaded" :chartData="chartData" :chartOptions="chartOptions"></ChartComponent>
-		<v-autocomplete
-			deletableChips
-			v-model="values"
-			:items="items"
-			chips
-			multiple
-			solo
-			hide-details
-			return-object
-			item-text="label"
-		></v-autocomplete>
+		<ChartComponent
+			v-if="loaded"
+			:chartData="chartData"
+			:chartOptions="chartOptions"
+		></ChartComponent>
+		<v-card-actions>
+			<v-autocomplete
+				deletableChips
+				v-model="values"
+				:items="items"
+				chips
+				multiple
+				solo
+				hide-details
+				return-object
+				item-text="label"
+			>
+			</v-autocomplete>
+		</v-card-actions>
 	</v-card>
 </template>
 
@@ -318,7 +325,7 @@ export default {
 			}
 		}
 		this.values.push(this.items[0]);
-		console.log(this.values);
+		// console.log(this.values);
 		// console.log(this.chartData)
 		// this.chartData = {
 		// 	labels: estados.labelsDias,
@@ -332,9 +339,6 @@ export default {
 				text: "Casos acumulados",
 			},
 			maintainAspectRatio: false,
-			legend: {
-				display: false,
-			},
 		};
 		this.loaded = true;
 		// console.log(this.items);

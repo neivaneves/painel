@@ -1,23 +1,19 @@
 <template>
 	<v-container fluid>
 		<v-row dense>
-			<v-col :sm="cards.cardChart.flex" :xs="cards.cardChart.flexxs">
+			<v-col :sm="6" :md="8" :lg="4">
 				<CardChart />
 			</v-col>
-			<v-col :sm="cards.cardPeriodo.flex" :xs="cards.cardPeriodo.flexxs">
+			<v-col :sm="6" :md="4" :lg="3">
 				<CardPeriodo />
 			</v-col>
-		</v-row>
-		<v-row dense>
-			<v-col :sm="cards.cardCrescimento.flex" :xs="cards.cardCrescimento.flex">
+			<v-col :sm="6" :lg="5">
 				<CardCrescimento />
 			</v-col>
-			<v-col :sm="cards.cardCrescimento.flex" :xs="cards.cardCrescimento.flex"> 
+			<v-col :sm="6" :lg="4">
 				<CardInfectados />
 			</v-col>
-		</v-row>
-		<v-row dense>
-			<v-col :sm="12" :xs="12">
+			<v-col :lg="8">
 				<CardTempoDobrar />
 			</v-col>
 		</v-row>
@@ -40,21 +36,21 @@ export default {
 		CardTempoDobrar,
 		CardInfectados,
 	},
-	data: () => ({
-		cards: {
-			cardChart: {
-				flex: 6,
-				flexxs: 12,
-			},
-			cardPeriodo: {
-				flex: 6,
-				vlexxs: 12,
-			},
-			cardCrescimento: {
-				flex: 6,
-				vlexxs: 12,
-			},
-		},
-	}),
+	// data: () => ({
+	// 	cards: {
+	// 		cardChart: {
+	// 			flex: 6,
+	// 			flexxs: 12,
+	// 		},
+	// 		cardPeriodo: {
+	// 			flex: 6,
+	// 			vlexxs: 12,
+	// 		},
+	// 		cardCrescimento: {
+	// 			flex: 6,
+	// 			vlexxs: 12,
+	// 		},
+	// 	},
+	// }),
 };
 </script>
