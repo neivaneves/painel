@@ -1,7 +1,7 @@
 <template>
 	<v-card v-if="loaded">
 		<v-row dense>
-			<v-col :sm="4" :xs="4" dense>
+			<v-col :cols="12" :sm="4" dense>
 				<v-list>
 					<v-list two-line>
 						<v-list-item v-for="i of rank.slice(0, 5)" :key="i.estado">
@@ -18,7 +18,7 @@
 					</v-list>
 				</v-list>
 			</v-col>
-			<v-col :sm="8" :xs="8" dense>
+			<v-col :cols="12" :sm="8" dense>
 				<MapComponent :estados="rank" />
 			</v-col>
 		</v-row>
