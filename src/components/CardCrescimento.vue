@@ -384,6 +384,10 @@ export default {
 			datasets: this.values,
 		};
 		this.chartOptions = {
+			title: {
+				display: true,
+				text: "Casos acumulados em escala log.",
+			},
 			scales: {
 				yAxes: [
 					{

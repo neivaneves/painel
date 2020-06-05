@@ -118,6 +118,10 @@ export default {
 			datasets: parsed,
 		};
 		this.chartOptions = {
+			title: {
+				display: true,
+				text: "Número de infecções em curso",
+			},
 			maintainAspectRatio: false,
 			tooltips: {
 				mode: "nearest",
