@@ -1,18 +1,18 @@
 <template>
-	<v-card>
+	<v-card v-if="loaded">
 		<v-card-text>
 			<div v-if="multiple">Casos novos no período:</div>
-            <div v-else>Novos casos no dia:</div>
+			<div v-else>Novos casos no dia:</div>
 			<p class="display-1 text--primary">
 				{{ casosPeriodo }}
 			</p>
 			<div v-if="multiple">Óbitos novos no período:</div>
-            <div v-else>Novos óbitos no dia:</div>
-            <p class="display-1 text--primary">
-                {{ obitosPeriodo }}
-            </p>
+			<div v-else>Novos óbitos no dia:</div>
+			<p class="display-1 text--primary">
+				{{ obitosPeriodo }}
+			</p>
 		</v-card-text>
-		<v-row v-if="loaded">
+		<v-card-actions>
 			<v-menu
 				ref="menu"
 				v-model="menu"
@@ -21,7 +21,6 @@
 				offset-y
 				min-width="290px"
 			>
-			
 				<template v-slot:activator="{ on }">
 					<v-text-field
 						v-model="dateRangeText"
@@ -44,7 +43,7 @@
 					<v-btn text color="primary" @click="save(dates)">OK</v-btn>
 				</v-date-picker>
 			</v-menu>
-		</v-row>
+		</v-card-actions>
 	</v-card>
 </template>
 
@@ -52,7 +51,7 @@
 export default {
 	name: "CardPeriodo",
 	data: () => ({
-        multiple: true,
+		multiple: true,
 		dates: [],
 		menu: false,
 		casosPeriodo: null,
@@ -89,7 +88,7 @@ export default {
 		console.log(this.fetchData);
 		console.log(this.dates.length);
 		if (this.dates.length === 1) {
-            this.multiple = false
+			this.multiple = false;
 			const findId = this.dates[0];
 			const findIdParsed = this.parsedDate(findId);
 			this.casosPeriodo = this.fetchData.dias.find(
@@ -99,7 +98,7 @@ export default {
 				(x) => x._id == findIdParsed
 			).obitosNovos;
 		} else {
-            this.multiple = true
+			this.multiple = true;
 			const datesOrdered = this.dates.sort((a, b) => a.localeCompare(b));
 			this.dates = datesOrdered;
 			const findIdI = this.dates[0];
@@ -131,10 +130,10 @@ export default {
 	},
 	methods: {
 		save(dates) {
-            this.menu = false
+			this.menu = false;
 			console.log(dates);
 			if (this.dates.length === 1 || dates[0] === dates[1]) {
-                this.multiple = false
+				this.multiple = false;
 				const findId = this.dates[0];
 				const findIdParsed = this.parsedDate(findId);
 				this.casosPeriodo = this.fetchData.dias.find(
@@ -147,7 +146,7 @@ export default {
 				// let debug = parseISO(today)              //new Date().toISOString().substr(0, 7)
 				// console.log(debug);
 			} else {
-                this.multiple = true
+				this.multiple = true;
 				const datesOrdered = this.dates.sort((a, b) => a.localeCompare(b));
 				this.dates = datesOrdered;
 				const findIdI = this.dates[0];
@@ -185,7 +184,7 @@ export default {
 </script>
 
 <style scoped>
-.row {
+/* .row {
 	padding: 20px;
-}
+} */
 </style>

@@ -22,15 +22,16 @@
 				<MapComponent :estados="rank" />
 			</v-col>
 		</v-row>
-		<v-row :sm="12" :xs="12" id="slDt">
+		<v-card-actions>
 			<v-slider
 				v-model="dataLeitura"
 				:min="0"
 				:max="dataMaxIndex"
 				label="Data:"
+				dense
 			/>
 			<p id="dataFormatada">{{ formatDate(parsedDataLeitura) }}</p>
-		</v-row>
+		</v-card-actions>
 	</v-card>
 </template>
 
@@ -132,10 +133,7 @@ export default {
 <style scoped>
 .row {
 	padding: 5px;
-}
-#slDt {
-	padding: 20px;
-	padding-bottom: 3px;
+	margin-bottom: 4px;
 }
 #dataFormatada {
 	padding-left: 5px;

@@ -5,7 +5,16 @@
 				<CardChart />
 			</v-col>
 			<v-col :sm="6" :md="4" :lg="3">
-				<CardPeriodo />
+				<v-row dense no-gutters>
+					<v-col :cols="12">
+						<CardPeriodo />
+					</v-col>
+				</v-row>
+				<v-row dense>
+					<v-col :cols="12" class="mgT">
+						<CardRecentes />
+					</v-col>
+				</v-row>
 			</v-col>
 			<v-col :sm="6" :lg="5">
 				<CardCrescimento />
@@ -26,6 +35,7 @@ import CardPeriodo from "./CardPeriodo";
 import CardCrescimento from "./CardCrescimento";
 import CardTempoDobrar from "./CardTempoDobrar";
 import CardInfectados from "./CardInfectados";
+import CardRecentes from "./CardRecentes";
 
 export default {
 	name: "DashboardContents",
@@ -35,6 +45,7 @@ export default {
 		CardCrescimento,
 		CardTempoDobrar,
 		CardInfectados,
+		CardRecentes,
 	},
 	// data: () => ({
 	// 	cards: {
@@ -54,3 +65,10 @@ export default {
 	// }),
 };
 </script>
+
+<style scoped>
+.mgT {
+	padding-top: 5px;
+	padding-bottom: 0;
+}
+</style>
