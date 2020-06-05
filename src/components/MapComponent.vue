@@ -1,5 +1,5 @@
 <template>
-	<div style="height: 377.23px; width: 99%">
+	<div style="height: 420px; width: 99%">
 		<l-map v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions">
 			<l-tile-layer :url="url" :attribution="attribution" />
 			<l-geo-json

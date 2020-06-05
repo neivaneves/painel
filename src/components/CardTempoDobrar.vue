@@ -1,10 +1,10 @@
 <template>
 	<v-card v-if="loaded">
-		<v-row dense>
-			<v-col :cols="12" :sm="4" dense>
+		<v-row dense no-gutters>
+			<v-col :cols="12" :sm="4">
 				<v-list>
 					<v-list two-line>
-						<v-list-item v-for="i of rank.slice(0, 5)" :key="i.estado">
+						<v-list-item v-for="i of rank.slice(0, 6)" :key="i.estado">
 							<v-list-item-content>
 								<v-list-item-title v-text="i.estado"></v-list-item-title>
 								<v-list-item-subtitle
@@ -29,6 +29,7 @@
 				:max="dataMaxIndex"
 				label="Data:"
 				dense
+				hide-details
 			/>
 			<p id="dataFormatada">{{ formatDate(parsedDataLeitura) }}</p>
 		</v-card-actions>
@@ -133,7 +134,14 @@ export default {
 <style scoped>
 .row {
 	padding: 5px;
+	padding-top: 10px;
 	margin-bottom: 4px;
+}
+.v-card {
+	padding-bottom: 5px;
+}
+.v-list {
+	padding-top: 0;
 }
 #dataFormatada {
 	padding-left: 5px;

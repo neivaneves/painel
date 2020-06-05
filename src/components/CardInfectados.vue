@@ -1,6 +1,7 @@
 <template>
 	<v-card>
 		<ChartComponent
+			height="445"
 			v-if="loaded"
 			:chartData="chartData"
 			:chartOptions="chartOptions"
