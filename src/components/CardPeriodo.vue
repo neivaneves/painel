@@ -43,6 +43,34 @@
 					<v-btn text color="primary" @click="save(dates)">OK</v-btn>
 				</v-date-picker>
 			</v-menu>
+						<v-fab-transition>
+				<v-btn
+					v-show="loaded"
+					color="grey"
+					absolute
+					icon
+					top
+					right
+					@click="overlay = !overlay"
+				>
+					<v-icon>info</v-icon>
+				</v-btn>
+			</v-fab-transition>
+		<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+			<p style="margin: 30px;" class="text-justify">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
+				lorem quam, eget vehicula elit tincidunt nec.
+			</p>
+			<v-btn
+				color="orange lighten-2"
+				absolute
+				fab
+				right
+				@click="overlay = false"
+			>
+				<v-icon>close</v-icon>
+			</v-btn>
+		</v-overlay>
 		</v-card-actions>
 	</v-card>
 </template>
@@ -53,6 +81,7 @@ export default {
 	data: () => ({
 		multiple: true,
 		dates: [],
+		overlay: false,
 		menu: false,
 		casosPeriodo: null,
 		obitosPeriodo: null,

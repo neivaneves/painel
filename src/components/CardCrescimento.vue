@@ -20,6 +20,38 @@
 			>
 			</v-autocomplete>
 		</v-card-actions>
+					<v-fab-transition>
+				<v-btn
+					v-show="loaded"
+					color="grey"
+					absolute
+					icon
+					top
+					right
+					@click="overlay = !overlay"
+				>
+					<v-icon>info</v-icon>
+				</v-btn>
+			</v-fab-transition>
+		<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+			<p style="margin: 30px;" class="text-justify">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
+				lorem quam, eget vehicula elit tincidunt nec. Proin auctor ac enim sed
+				lobortis. Donec sed accumsan risus, sed placerat ex. Phasellus accumsan
+				mi nec ex sagittis, a congue odio commodo. Cras non congue enim, in
+				vestibulum tortor. Fusce quis mattis mi, eget interdum nibh. Sed auctor
+				tempus dolor.
+			</p>
+			<v-btn
+				color="orange lighten-2"
+				absolute
+				fab
+				right
+				@click="overlay = false"
+			>
+				<v-icon>close</v-icon>
+			</v-btn>
+		</v-overlay>
 	</v-card>
 </template>
 
@@ -35,6 +67,7 @@ export default {
 	props: ["addTodos"],
 	data: () => ({
 		loaded: false,
+		overlay: false,
 		chartData: null,
 		chartOptions: null,
 		items: [],

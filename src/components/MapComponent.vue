@@ -1,6 +1,6 @@
 <template>
 	<div style="height: 420px; width: 99%">
-		<l-map v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions">
+		<l-map style="z-index: 0;" v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions">
 			<l-tile-layer :url="url" :attribution="attribution" />
 			<l-geo-json
 				v-for="jsonEstado of geojson.features"

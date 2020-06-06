@@ -9,7 +9,7 @@
 						<v-icon>remove_circle</v-icon>
 					</v-avatar>
 				</v-chip>
-				<v-chip v-else>
+				<v-chip color="red lighten-1" v-else>
 					<v-avatar left>
 						<v-icon>arrow_circle_up</v-icon>
 					</v-avatar>
@@ -24,7 +24,7 @@
 						<v-icon>remove_circle</v-icon>
 					</v-avatar>
 				</v-chip>
-				<v-chip v-else>
+				<v-chip color="red lighten-1" v-else>
 					<v-avatar left>
 						<v-icon>arrow_circle_up</v-icon>
 					</v-avatar>
@@ -44,6 +44,34 @@
 				item-text="label"
 			>
 			</v-autocomplete>
+						<v-fab-transition>
+				<v-btn
+					v-show="loaded"
+					color="grey"
+					absolute
+					icon
+					top
+					right
+					@click="overlay = !overlay"
+				>
+					<v-icon>info</v-icon>
+				</v-btn>
+			</v-fab-transition>
+		<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+			<p style="margin: 30px;" class="text-justify">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
+				lorem quam, eget vehicula elit tincidunt nec.
+			</p>
+			<v-btn
+				color="orange lighten-2"
+				absolute
+				fab
+				right
+				@click="overlay = false"
+			>
+				<v-icon>close</v-icon>
+			</v-btn>
+		</v-overlay>
 		</v-card-actions>
 	</v-card>
 </template>
@@ -56,6 +84,7 @@ export default {
 	data: () => ({
 		loaded: false,
 		items: null,
+		overlay: false,
 		values: null,
 	}),
 	async created() {
