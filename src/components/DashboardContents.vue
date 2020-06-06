@@ -2,7 +2,7 @@
 	<v-container fluid>
 		<v-row dense>
 			<v-col :sm="6" :md="8" :lg="4">
-				<CardChart />
+				<CardChart :addTodos="addTodos" />
 			</v-col>
 			<v-col :sm="6" :md="4" :lg="3">
 				<v-row dense no-gutters>
@@ -17,7 +17,7 @@
 				</v-row>
 			</v-col>
 			<v-col :sm="6" :lg="5">
-				<CardCrescimento />
+				<CardCrescimento :addTodos="addTodos" />
 			</v-col>
 			<v-col :sm="6" :lg="4">
 				<CardInfectados />
@@ -47,22 +47,7 @@ export default {
 		CardInfectados,
 		CardRecentes,
 	},
-	// data: () => ({
-	// 	cards: {
-	// 		cardChart: {
-	// 			flex: 6,
-	// 			flexxs: 12,
-	// 		},
-	// 		cardPeriodo: {
-	// 			flex: 6,
-	// 			vlexxs: 12,
-	// 		},
-	// 		cardCrescimento: {
-	// 			flex: 6,
-	// 			vlexxs: 12,
-	// 		},
-	// 	},
-	// }),
+	props: ["addTodos"],
 };
 </script>
 

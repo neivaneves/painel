@@ -85,8 +85,8 @@ export default {
 		);
 		this.max = `${yearMax}-${monthMax}-${dayMax}`;
 		this.dates = [this.min, this.max];
-		console.log(this.fetchData);
-		console.log(this.dates.length);
+		// console.log(this.fetchData);
+		// console.log(this.dates.length);
 		if (this.dates.length === 1) {
 			this.multiple = false;
 			const findId = this.dates[0];
@@ -118,11 +118,11 @@ export default {
 		}
 		this.loaded = true;
 	},
-	wach: {
-		dates: function() {
-			console.log(this.dates);
-		},
-	},
+	// wach: {
+	// 	dates: function() {
+	// 		console.log(this.dates);
+	// 	},
+	// },
 	computed: {
 		dateRangeText() {
 			return this.dates.join(" ~ ");
@@ -131,7 +131,7 @@ export default {
 	methods: {
 		save(dates) {
 			this.menu = false;
-			console.log(dates);
+			// console.log(dates);
 			if (this.dates.length === 1 || dates[0] === dates[1]) {
 				this.multiple = false;
 				const findId = this.dates[0];
@@ -167,8 +167,8 @@ export default {
 					.casosAcumulado;
 				const obitosF = this.fetchData.dias.find((x) => x._id == findIdParsedF)
 					.obitosAcumulado;
-				console.log(casosF, casosI);
-				console.log(obitosF, obitosI);
+				// console.log(casosF, casosI);
+				// console.log(obitosF, obitosI);
 				this.casosPeriodo = casosF - casosI + casosINovos;
 				this.obitosPeriodo = obitosF - obitosI + obitosINovos;
 			}

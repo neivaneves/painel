@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<ChartComponent
-			height="445"
+			style="height: 445px;"
 			v-if="loaded"
 			:chartData="chartData"
 			:chartOptions="chartOptions"
@@ -37,9 +37,9 @@ export default {
 		values: {
 			label: "Brasil",
 		},
-		items: {
+		items: [{
 			label: "Brasil",
-		},
+		}],
 		chartData: null,
 		chartOptions: null,
 	}),

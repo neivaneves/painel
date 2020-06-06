@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<ChartComponent
-			height="445"
+			style="height: 445px;"
 			v-if="loaded"
 			:chartData="chartData"
 			:chartOptions="chartOptions"
@@ -32,6 +32,7 @@ export default {
 	components: {
 		ChartComponent,
 	},
+	props: ["addTodos"],
 	data: () => ({
 		loaded: false,
 		chartData: null,
@@ -349,6 +350,22 @@ export default {
 			},
 		];
 		const datas = [];
+		const responseBrasil = await fetch(
+			"https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/brasil"
+		);
+		const totalBrasil = await responseBrasil.json();
+		const dataPointBrasil = {
+			borderColor: "#CCCCCC",
+			data: [],
+			lineTension: 0,
+			pointRadius: 0,
+			pointHitRadius: 3,
+			fill: false,
+			label: "Brasil",
+		};
+		for (let elt of totalBrasil) {
+			dataPointBrasil.data.push(elt.casosAcumulado);
+		}
 		// let indexDoisDias = 1;
 		// let indexOitoDias = 1;
 		// const minCasos = 5;
@@ -369,11 +386,13 @@ export default {
 				}
 			}
 		}
+		template.unshift(dataPointBrasil);
 		for (let elt of template) {
-			while (elt.data.length < template[0].data.length) {
+			while (elt.data.length < template[1].data.length) {
 				elt.data.splice(0, 0, "");
 			}
 		}
+		console.log(template)
 		this.items = template;
 		this.values.push(this.items[0]);
 		// Vue.set(this.chartData, "labels", datas);
@@ -418,9 +437,21 @@ export default {
 		this.loaded = true;
 	},
 	watch: {
-		values: function(val) {
-			this.chartData.datasets = val;
+		values: function() {
+			this.chartData.datasets = this.values;
 		},
+		addTodos: function() {
+			let newDataset = [];
+			for (let elt of this.items) {
+				for (let comp of this.addTodos) {
+					if (elt.label === comp.label) {
+						newDataset.push(elt);
+					}
+				}
+			}
+			this.values = newDataset;
+		},
+		deep: true,
 	},
 };
 </script>
