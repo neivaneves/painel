@@ -1,6 +1,6 @@
 <template>
 	<v-app id="inspire">
-		<v-navigation-drawer
+		<!-- <v-navigation-drawer
 			v-model="drawer"
 			app
 			clipped
@@ -26,7 +26,7 @@
 					</v-list-item-content>
 				</v-list-item>
 			</v-list>
-		</v-navigation-drawer>
+		</v-navigation-drawer> -->
 
 		<v-app-bar app clipped-left>
 			<v-toolbar-title>Painel</v-toolbar-title>
