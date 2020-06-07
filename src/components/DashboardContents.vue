@@ -2,16 +2,17 @@
 	<v-container fluid>
 		<v-row dense>
 			<v-col :sm="6" :md="8" :lg="4">
-				<CardChart :addTodos="addTodos" />
+				<CardObitos :addTodos="addTodos" />
 			</v-col>
 			<v-col :sm="6" :md="4" :lg="3">
 				<v-row dense no-gutters>
-					<v-col :cols="12">
+					<!-- <v-col :cols="12">
 						<CardPeriodo />
-					</v-col>
+					</v-col> -->
 				</v-row>
-				<v-row dense>
-					<v-col :cols="12" class="mgT">
+				<v-row dense no-gutters>
+					<!-- <v-col :cols="12" class="mgT"> -->
+					<v-col :cols="12">
 						<CardRecentes />
 					</v-col>
 				</v-row>
@@ -30,8 +31,8 @@
 </template>
 
 <script>
-import CardChart from "./CardChart";
-import CardPeriodo from "./CardPeriodo";
+import CardObitos from "./CardObitos";
+// import CardPeriodo from "./CardPeriodo";
 import CardCrescimento from "./CardCrescimento";
 import CardTempoDobrar from "./CardTempoDobrar";
 import CardInfectados from "./CardInfectados";
@@ -40,8 +41,8 @@ import CardRecentes from "./CardRecentes";
 export default {
 	name: "DashboardContents",
 	components: {
-		CardChart,
-		CardPeriodo,
+		CardObitos,
+		// CardPeriodo,
 		CardCrescimento,
 		CardTempoDobrar,
 		CardInfectados,

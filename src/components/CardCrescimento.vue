@@ -5,6 +5,7 @@
 			v-if="loaded"
 			:chartData="chartData"
 			:chartOptions="chartOptions"
+			:escala="log"
 		></ChartComponent>
 		<v-card-actions>
 			<v-autocomplete
@@ -20,6 +21,30 @@
 			>
 			</v-autocomplete>
 		</v-card-actions>
+				<v-btn 
+					v-if="log"
+					v-show="loaded"
+					color="green lighten-1"
+					absolute
+					top
+					left
+					small
+					@click="log = !log"
+				>
+				log
+				</v-btn>
+				<v-btn 
+					v-if="!log"
+					v-show="loaded"
+					color="red lighten-1"
+					absolute
+					top
+					left
+					small
+					@click="log = !log"
+				>
+				linear
+				</v-btn>
 					<v-fab-transition>
 				<v-btn
 					v-show="loaded"
@@ -57,6 +82,7 @@
 
 <script>
 import ChartComponent from "./ChartComponent";
+import Vue from "vue";
 // import Vue from "vue";
 
 export default {
@@ -67,6 +93,7 @@ export default {
 	props: ["addTodos"],
 	data: () => ({
 		loaded: false,
+		log: false,
 		overlay: false,
 		chartData: null,
 		chartOptions: null,
@@ -425,7 +452,6 @@ export default {
 				elt.data.splice(0, 0, "");
 			}
 		}
-		console.log(template)
 		this.items = template;
 		this.values.push(this.items[0]);
 		// Vue.set(this.chartData, "labels", datas);
@@ -435,16 +461,17 @@ export default {
 			labels: datas,
 			datasets: this.values,
 		};
+		const escala = this.log ? "logarithmic" : "linear";
 		this.chartOptions = {
 			title: {
 				display: true,
-				text: "Casos acumulados em escala log.",
+				text: "Casos acumulados",
 			},
 			scales: {
 				yAxes: [
 					{
 						id: "log",
-						type: "logarithmic",
+						type: escala,
 						// afterTickToLabelConversion: function(axis) {
 						// 	axis.ticks[0] = "";
 						// const [tick, exp] = axis.ticks[0].split("e");
@@ -472,6 +499,10 @@ export default {
 	watch: {
 		values: function() {
 			this.chartData.datasets = this.values;
+		},
+		log: function() {
+			const escala = this.log ? "logarithmic" : "linear";
+			Vue.set(this.chartOptions.scales.yAxes[0], "type", escala)
 		},
 		addTodos: function() {
 			let newDataset = [];

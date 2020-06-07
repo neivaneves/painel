@@ -43,7 +43,7 @@
 					<v-btn text color="primary" @click="save(dates)">OK</v-btn>
 				</v-date-picker>
 			</v-menu>
-						<v-fab-transition>
+			<v-fab-transition>
 				<v-btn
 					v-show="loaded"
 					color="grey"
@@ -56,21 +56,21 @@
 					<v-icon>info</v-icon>
 				</v-btn>
 			</v-fab-transition>
-		<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
-			<p style="margin: 30px;" class="text-justify">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
-				lorem quam, eget vehicula elit tincidunt nec.
-			</p>
-			<v-btn
-				color="orange lighten-2"
-				absolute
-				fab
-				right
-				@click="overlay = false"
-			>
-				<v-icon>close</v-icon>
-			</v-btn>
-		</v-overlay>
+			<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+				<p style="margin: 30px;" class="text-justify">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
+					lorem quam, eget vehicula elit tincidunt nec.
+				</p>
+				<v-btn
+					color="orange lighten-2"
+					absolute
+					fab
+					right
+					@click="overlay = false"
+				>
+					<v-icon>close</v-icon>
+				</v-btn>
+			</v-overlay>
 		</v-card-actions>
 	</v-card>
 </template>
@@ -93,26 +93,12 @@ export default {
 	async mounted() {
 		this.loaded = false;
 		const response = await fetch(
-			"https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalCasos",
-			{
-				referrerPolicy: "no-referrer-when-downgrade",
-				body: null,
-				method: "GET",
-				credentials: "omit",
-			}
+			"https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/brasil"
 		);
 		const msData = await response.json();
 		this.fetchData = msData;
-		for (let i in this.fetchData.dias) {
-			this.fetchData.dias[i]._id = this.fetchData.dias[i]._id + "/2020";
-		}
-		const [dayMin, monthMin, yearMin] = this.fetchData.dias[0]._id.split("/");
-		this.min = `${yearMin}-${monthMin}-${dayMin}`;
-		const maxIndex = this.fetchData.dias.length - 1;
-		const [dayMax, monthMax, yearMax] = this.fetchData.dias[maxIndex]._id.split(
-			"/"
-		);
-		this.max = `${yearMax}-${monthMax}-${dayMax}`;
+		console.log(this.fetchData)
+		const maxIndex = this.fetchData.length - 1;
 		this.dates = [this.min, this.max];
 		// console.log(this.fetchData);
 		// console.log(this.dates.length);
@@ -120,10 +106,10 @@ export default {
 			this.multiple = false;
 			const findId = this.dates[0];
 			const findIdParsed = this.parsedDate(findId);
-			this.casosPeriodo = this.fetchData.dias.find(
+			this.casosPeriodo = this.fetchData.find(
 				(x) => x._id == findIdParsed
 			).casosNovos;
-			this.obitosPeriodo = this.fetchData.dias.find(
+			this.obitosPeriodo = this.fetchData.find(
 				(x) => x._id == findIdParsed
 			).obitosNovos;
 		} else {
@@ -132,15 +118,15 @@ export default {
 			this.dates = datesOrdered;
 			const findIdI = this.dates[0];
 			const findIdParsedI = this.parsedDate(findIdI);
-			const casosI = this.fetchData.dias.find((x) => x._id == findIdParsedI)
+			const casosI = this.fetchData.find((x) => x._id == findIdParsedI)
 				.casosAcumulado;
-			const obitosI = this.fetchData.dias.find((x) => x._id == findIdParsedI)
+			const obitosI = this.fetchData.find((x) => x._id == findIdParsedI)
 				.obitosAcumulado;
 			const findIdF = this.dates[1];
 			const findIdParsedF = this.parsedDate(findIdF);
-			const casosF = this.fetchData.dias.find((x) => x._id == findIdParsedF)
+			const casosF = this.fetchData.find((x) => x._id == findIdParsedF)
 				.casosAcumulado;
-			const obitosF = this.fetchData.dias.find((x) => x._id == findIdParsedF)
+			const obitosF = this.fetchData.find((x) => x._id == findIdParsedF)
 				.obitosAcumulado;
 			this.casosPeriodo = casosF - casosI;
 			this.obitosPeriodo = obitosF - obitosI;
@@ -165,10 +151,10 @@ export default {
 				this.multiple = false;
 				const findId = this.dates[0];
 				const findIdParsed = this.parsedDate(findId);
-				this.casosPeriodo = this.fetchData.dias.find(
+				this.casosPeriodo = this.fetchData.find(
 					(x) => x._id == findIdParsed
 				).casosNovos;
-				this.obitosPeriodo = this.fetchData.dias.find(
+				this.obitosPeriodo = this.fetchData.find(
 					(x) => x._id == findIdParsed
 				).obitosNovos;
 				// let today = this.dates[0]
@@ -180,21 +166,21 @@ export default {
 				this.dates = datesOrdered;
 				const findIdI = this.dates[0];
 				const findIdParsedI = this.parsedDate(findIdI);
-				const casosI = this.fetchData.dias.find((x) => x._id == findIdParsedI)
+				const casosI = this.fetchData.find((x) => x._id == findIdParsedI)
 					.casosAcumulado;
-				const casosINovos = this.fetchData.dias.find(
+				const casosINovos = this.fetchData.find(
 					(x) => x._id == findIdParsedI
 				).casosNovos;
-				const obitosI = this.fetchData.dias.find((x) => x._id == findIdParsedI)
+				const obitosI = this.fetchData.find((x) => x._id == findIdParsedI)
 					.obitosAcumulado;
-				const obitosINovos = this.fetchData.dias.find(
+				const obitosINovos = this.fetchData.find(
 					(x) => x._id == findIdParsedI
 				).obitosNovos;
 				const findIdF = this.dates[1];
 				const findIdParsedF = this.parsedDate(findIdF);
-				const casosF = this.fetchData.dias.find((x) => x._id == findIdParsedF)
+				const casosF = this.fetchData.find((x) => x._id == findIdParsedF)
 					.casosAcumulado;
-				const obitosF = this.fetchData.dias.find((x) => x._id == findIdParsedF)
+				const obitosF = this.fetchData.find((x) => x._id == findIdParsedF)
 					.obitosAcumulado;
 				// console.log(casosF, casosI);
 				// console.log(obitosF, obitosI);

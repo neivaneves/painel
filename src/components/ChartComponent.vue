@@ -6,15 +6,18 @@ const { reactiveProp } = mixins
 export default {
   extends: Line,
   mixins: [reactiveProp],
-  props: ['chartData', 'chartOptions'],
+  props: ['chartData', 'chartOptions','escala'],
   mounted () {
     // console.log(this.chartData)
-    this.renderChart(this.chartData, this.chartOptions)  
+    this.renderChart(this.chartData, this.chartOptions)
   },
   watch: {
       'chartData.datasets': function () {
           this.$data._chart.update()
         //   console.log("finalmente")
+      },
+      'escala': function() {
+          this.renderChart(this.chartData, this.chartOptions)
       },
       deep: true
   }
