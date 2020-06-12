@@ -159,8 +159,8 @@ export default {
 		loaded: false,
 		items: null,
 		janela: false,
-		datasetCasos: null,
-		datasetObitos: null,
+		datasetCasos: [],
+		datasetObitos: [],
 		plot: false,
 		fetchData: null,
 		casosTotais: null,
@@ -205,7 +205,7 @@ export default {
 			dataCasos.push(dpCasos);
 			dataObitos.push(dpObitos);
 		}
-		this.datasetCasos = {
+		this.datasetCasos = [{
 			data: dataCasos,
 			backgroundColor: "indigo",
 			borderColor: "indigo",
@@ -214,8 +214,8 @@ export default {
 			borderWidth: 2,
 			pointHitRadius: 10,
 			fill: false,
-		};
-		this.datasetObitos = {
+		}];
+		this.datasetObitos = [{
 			data: dataObitos,
 			backgroundColor: "orange",
 			borderColor: "orange",
@@ -224,11 +224,59 @@ export default {
 			pointHitRadius: 10,
 			fill: false,
 			borderWidth: 2,
-		};
+		}];
+		let dataMedia = [];
+		let stream = [];
+		for (let elt of this.datasetObitos[0].data) {
+			stream.unshift(Number(elt.y));
+			if (stream.length == 7) {
+				const med = stream.reduce((a, b) => a + b) / stream.length;
+				const dia = elt.x;
+				dataMedia.push({
+					x: dia,
+					y: med.toFixed(),
+				});
+				stream.pop();
+			}
+		}
+		this.datasetObitos.push({
+			data: dataMedia,
+			backgroundColor: "grey",
+			borderColor: "grey",
+			label: "Média móvel",
+			pointRadius: 0,
+			pointHitRadius: 10,
+			fill: false,
+			borderWidth: 2,
+		});
+		dataMedia = [];
+		stream = [];
+		for (let elt of this.datasetCasos[0].data) {
+			stream.unshift(Number(elt.y));
+			if (stream.length == 7) {
+				const med = stream.reduce((a, b) => a + b) / stream.length;
+				const dia = elt.x;
+				dataMedia.push({
+					x: dia,
+					y: med.toFixed(),
+				});
+				stream.pop();
+			}
+		}
+		this.datasetCasos.push({
+			data: dataMedia,
+			backgroundColor: "grey",
+			borderColor: "grey",
+			label: "Média móvel",
+			pointRadius: 0,
+			pointHitRadius: 10,
+			fill: false,
+			borderWidth: 2,
+		});
 		const ds = this.plot ? this.datasetCasos : this.datasetObitos;
 		this.chartData = {
 			labels: labels,
-			datasets: [ds],
+			datasets: ds,
 		};
 		const indexView = dadosDaRegiao[0].data.length - 1;
 		this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos;
@@ -274,7 +322,9 @@ export default {
 		save(dates) {
 			if (this.dates.length == 1 || dates[0] === dates[1]) {
 				this.janela = false;
-				const indexCasosF = this.fetchData.data.findIndex(a => a.data == dates[0])
+				const indexCasosF = this.fetchData.data.findIndex(
+					(a) => a.data == dates[0]
+				);
 				const casosFNovos = this.fetchData.data[indexCasosF].casosNovos;
 				const casosF = this.fetchData.data[indexCasosF].casosAcumulado;
 				const obitosFNovos = this.fetchData.data[indexCasosF].obitosNovos;
@@ -282,23 +332,29 @@ export default {
 				this.casosTotais = casosF;
 				this.obitosTotais = obitosF;
 				this.casosNovos = casosFNovos;
-				this.obitosNovos = obitosFNovos;				
+				this.obitosNovos = obitosFNovos;
 				this.chartOptions.scales.xAxes[0].ticks.min = this.min;
 				this.chartOptions.scales.xAxes[0].ticks.max = this.max;
 			} else {
 				this.janela = true;
-				const indexCasosI = this.fetchData.data.findIndex(a => a.data == dates[0]) 
+				const indexCasosI = this.fetchData.data.findIndex(
+					(a) => a.data == dates[0]
+				);
 				const casosINovos = this.fetchData.data[indexCasosI].casosNovos;
 				const casosI = this.fetchData.data[indexCasosI].casosAcumulado;
 				const obitosINovos = this.fetchData.data[indexCasosI].obitosNovos;
 				const obitosI = this.fetchData.data[indexCasosI].obitosAcumulado;
-				const indexCasosF = this.fetchData.data.findIndex(a => a.data == dates[1]) 
+				const indexCasosF = this.fetchData.data.findIndex(
+					(a) => a.data == dates[1]
+				);
 				// const casosFNovos = this.fetchData.data[indexCasosF].casosNovos;
 				const casosF = this.fetchData.data[indexCasosF].casosAcumulado;
 				// const obitosFNovos = this.fetchData.data[indexCasosF].obitosNovos;
 				const obitosF = this.fetchData.data[indexCasosF].obitosAcumulado;
-				this.casosTotais = parseInt(casosF) - parseInt(casosI) + parseInt(casosINovos);
-				this.obitosTotais = parseInt(obitosF) - parseInt(obitosI) + parseInt(obitosINovos);
+				this.casosTotais =
+					parseInt(casosF) - parseInt(casosI) + parseInt(casosINovos);
+				this.obitosTotais =
+					parseInt(obitosF) - parseInt(obitosI) + parseInt(obitosINovos);
 				// this.casosNovos = parseInt(casosFNovos);
 				// this.obitosNovos = parseInt(obitosFNovos);
 				this.chartOptions.scales.xAxes[0].ticks.min = dates[0];
@@ -314,7 +370,6 @@ export default {
 	},
 	watch: {
 		value: async function() {
-			console.log(this.value);
 			const request = this.textToUrl(this.value);
 			const response = await fetch(
 				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/todasAsRegioes?arg1=${request}`
@@ -335,28 +390,80 @@ export default {
 				dataCasos.push(dpCasos);
 				dataObitos.push(dpObitos);
 			}
-			this.datasetCasos = {
-				data: dataCasos,
-				backgroundColor: "indigo",
-				borderColor: "indigo",
-				label: "Novos Casos",
+			this.datasetCasos = [
+				{
+					data: dataCasos,
+					backgroundColor: "indigo",
+					borderColor: "indigo",
+					label: "Novos Casos",
+					pointRadius: 0,
+					borderWidth: 2,
+					pointHitRadius: 15,
+					fill: false,
+				},
+			];
+			this.datasetObitos = [
+				{
+					data: dataObitos,
+					backgroundColor: "orange",
+					borderColor: "orange",
+					label: "Novos Óbitos",
+					pointRadius: 0,
+					pointHitRadius: 15,
+					fill: false,
+					borderWidth: 2,
+				},
+			];
+			let dataMedia = [];
+			let stream = [];
+			for (let elt of this.datasetObitos[0].data) {
+				stream.unshift(Number(elt.y));
+				if (stream.length == 7) {
+					const med = stream.reduce((a, b) => a + b) / stream.length;
+					const dia = elt.x;
+					dataMedia.push({
+						x: dia,
+						y: med.toFixed(),
+					});
+					stream.pop();
+				}
+			}
+			this.datasetObitos.push({
+				data: dataMedia,
+				backgroundColor: "grey",
+				borderColor: "grey",
+				label: "Média móvel",
 				pointRadius: 0,
-				borderWidth: 2,
-				pointHitRadius: 15,
+				pointHitRadius: 10,
 				fill: false,
-			};
-			this.datasetObitos = {
-				data: dataObitos,
-				backgroundColor: "orange",
-				borderColor: "orange",
-				label: "Novos Óbitos",
+				borderWidth: 2,
+			});
+			dataMedia = [];
+			stream = [];
+			for (let elt of this.datasetCasos[0].data) {
+				stream.unshift(Number(elt.y));
+				if (stream.length == 7) {
+					const med = stream.reduce((a, b) => a + b) / stream.length;
+					const dia = elt.x;
+					dataMedia.push({
+						x: dia,
+						y: med.toFixed(),
+					});
+					stream.pop();
+				}
+			}
+			this.datasetCasos.push({
+				data: dataMedia,
+				backgroundColor: "grey",
+				borderColor: "grey",
+				label: "Média móvel",
 				pointRadius: 0,
-				pointHitRadius: 15,
+				pointHitRadius: 10,
 				fill: false,
 				borderWidth: 2,
-			};
+			});
 			const ds = this.plot ? this.datasetCasos : this.datasetObitos;
-			this.chartData.datasets = [ds];
+			this.chartData.datasets = ds;
 			const indexView = dadosDaRegiao[0].data.length - 1;
 			this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos;
 			this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos;
@@ -365,14 +472,14 @@ export default {
 		},
 		plot: function() {
 			const ds = this.plot ? this.datasetCasos : this.datasetObitos;
-			this.chartData.datasets = [ds];
+			this.chartData.datasets = ds;
 		},
 	},
 	computed: {
 		dateRangeText() {
 			const a = [];
-			a.push(this.parsedDate(this.dates[0]))
-			a.push(this.parsedDate(this.dates[1]))
+			a.push(this.parsedDate(this.dates[0]));
+			a.push(this.parsedDate(this.dates[1]));
 			return a.join(" a ");
 		},
 	},
