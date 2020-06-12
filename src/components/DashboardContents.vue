@@ -2,20 +2,20 @@
 	<v-container fluid>
 		<v-row dense>
 			<v-col :sm="6" :md="8" :lg="4">
-				<CardObitos :addTodos="addTodos" />
+				<CardRecentes />
 			</v-col>
 			<v-col :sm="6" :md="4" :lg="4">
-				<v-row dense no-gutters>
-					<!-- <v-col :cols="12">
-						<CardPeriodo />
-					</v-col> -->
-				</v-row>
-				<v-row dense no-gutters>
-					<!-- <v-col :cols="12" class="mgT"> -->
+				<!-- <v-row dense no-gutters>
 					<v-col :cols="12">
-						<CardRecentes />
+						<CardPeriodo />
 					</v-col>
 				</v-row>
+				<v-row dense no-gutters>
+					<v-col :cols="12" class="mgT">
+					<v-col :cols="12"> -->
+						<CardObitos :addTodos="addTodos" />
+					<!-- </v-col>
+				</v-row> -->
 			</v-col>
 			<v-col :sm="6" :lg="4">
 				<CardCrescimento :addTodos="addTodos" />

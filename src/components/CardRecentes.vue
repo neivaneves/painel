@@ -67,7 +67,7 @@
 			</v-btn>
 		</v-row>
 		<ChartComponent
-			style="height: 257px;"
+			style="height: 267px;"
 			v-if="loaded"
 			:chartData="chartData"
 			:chartOptions="chartOptions"
