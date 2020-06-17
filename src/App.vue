@@ -68,9 +68,9 @@
 			</v-menu>
 		</v-app-bar>
 
-		<v-content>
+		<v-main>
 			<DashboardContents :addTodos="addTodos" />
-		</v-content>
+		</v-main>
 	</v-app>
 </template>
 

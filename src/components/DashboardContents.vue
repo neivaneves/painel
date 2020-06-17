@@ -23,8 +23,11 @@
 			<v-col :sm="6" :lg="4">
 				<CardInfectados />
 			</v-col>
-			<v-col :lg="8">
+			<v-col :sm="12" :lg="8">
 				<CardTempoDobrar />
+			</v-col>
+			<v-col :sm="12" :lg="4">
+				<CardCompObitos />
 			</v-col>
 		</v-row>
 	</v-container>
@@ -37,12 +40,14 @@ import CardCrescimento from "./CardCrescimento";
 import CardTempoDobrar from "./CardTempoDobrar";
 import CardInfectados from "./CardInfectados";
 import CardRecentes from "./CardRecentes";
+import CardCompObitos from "./CardCompObitos"
 
 export default {
 	name: "DashboardContents",
 	components: {
 		CardObitos,
 		// CardPeriodo,
+		CardCompObitos,
 		CardCrescimento,
 		CardTempoDobrar,
 		CardInfectados,
