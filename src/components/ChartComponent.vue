@@ -13,7 +13,7 @@ export default {
   },
   watch: {
       'chartData.datasets': function () {
-          this.$data._chart.update()
+          this.renderChart(this.chartData, this.chartOptions)
         //   console.log("finalmente")
       },
       'escala': function() {

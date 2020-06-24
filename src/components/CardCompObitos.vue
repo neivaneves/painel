@@ -1,53 +1,59 @@
 <template>
-	<v-card>
-		<BarChart
-			v-if="loaded"
-			style="height: 445px;"
-			:chartData="dadosObitosDia"
-			:chartOptions="chartOptions"
-		/>
-		<v-card-actions>
-			<v-autocomplete
-				deletableChips
-				v-model="values"
-				:items="items"
-				chips
-				solo
-				label="Região"
-				hide-details
-			>
-			</v-autocomplete>
-			<v-fab-transition>
-				<v-btn
-					v-show="loaded"
-					color="grey"
-					absolute
-					icon
-					top
-					right
-					@click="overlay = !overlay"
+	<v-skeleton-loader
+		:loading="!loaded"
+		height="500"
+		type="card-heading, card"
+	>
+		<v-card>
+			<BarChart
+				v-if="loaded"
+				style="height: 445px;"
+				:chartData="dadosObitosDia"
+				:chartOptions="chartOptions"
+			/>
+			<v-card-actions>
+				<v-autocomplete
+					deletableChips
+					v-model="values"
+					:items="items"
+					chips
+					solo
+					label="Região"
+					hide-details
 				>
-					<v-icon>info</v-icon>
-				</v-btn>
-			</v-fab-transition>
-			<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
-				<p style="margin: 30px;" class="text-justify">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
-					lorem quam, eget vehicula elit tincidunt nec. Proin auctor ac enim sed
-					lobortis. Donec sed accumsan risus, sed placerat ex.
-				</p>
-				<v-btn
-					color="orange lighten-2"
-					absolute
-					fab
-					right
-					@click="overlay = false"
-				>
-					<v-icon>close</v-icon>
-				</v-btn>
-			</v-overlay>
-		</v-card-actions>
-	</v-card>
+				</v-autocomplete>
+				<v-fab-transition>
+					<v-btn
+						v-show="loaded"
+						color="grey"
+						absolute
+						icon
+						top
+						right
+						@click="overlay = !overlay"
+					>
+						<v-icon>info</v-icon>
+					</v-btn>
+				</v-fab-transition>
+				<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+					<p style="margin: 30px;" class="text-justify">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+						ultricies lorem quam, eget vehicula elit tincidunt nec. Proin auctor
+						ac enim sed lobortis. Donec sed accumsan risus, sed placerat ex.
+					</p>
+					<v-btn
+						color="orange lighten-2"
+						absolute
+						fab
+						right
+						@click="overlay = false"
+					>
+						<v-icon>close</v-icon>
+					</v-btn>
+				</v-overlay>
+			</v-card-actions>
+		</v-card>
+	</v-skeleton-loader>
 </template>
 
 <script>

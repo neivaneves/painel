@@ -1,59 +1,65 @@
 <template>
-	<v-card>
-		<ChartComponent
-			style="height: 445px;"
-			v-if="loaded"
-			:chartData="chartData"
-			:chartOptions="chartOptions"
-		></ChartComponent>
-		<v-card-actions>
-			<v-autocomplete
-				deletableChips
-				v-model="values"
-				:items="items"
-				chips
-				multiple
-				readonly
-				solo
-				hide-details
-				return-object
-				item-text="label"
-			>
-			</v-autocomplete>
-						<v-fab-transition>
-				<v-btn
-					v-show="loaded"
-					color="grey"
-					absolute
-					icon
-					top
-					right
-					@click="overlay = !overlay"
+	<v-skeleton-loader
+		:loading="!loaded"
+		height="400"
+		type="card-heading, card"
+	>
+		<v-card>
+			<ChartComponent
+				style="height: 445px;"
+				v-if="loaded"
+				:chartData="chartData"
+				:chartOptions="chartOptions"
+			></ChartComponent>
+			<v-card-actions>
+				<v-autocomplete
+					deletableChips
+					v-model="values"
+					:items="items"
+					chips
+					multiple
+					readonly
+					solo
+					hide-details
+					return-object
+					item-text="label"
 				>
-					<v-icon>info</v-icon>
-				</v-btn>
-			</v-fab-transition>
-		<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
-			<p style="margin: 30px;" class="text-justify">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
-				lorem quam, eget vehicula elit tincidunt nec. Proin auctor ac enim sed
-				lobortis. Donec sed accumsan risus, sed placerat ex. Phasellus accumsan
-				mi nec ex sagittis, a congue odio commodo. Cras non congue enim, in
-				vestibulum tortor. Fusce quis mattis mi, eget interdum nibh. Sed auctor
-				tempus dolor.
-			</p>
-			<v-btn
-				color="orange lighten-2"
-				absolute
-				fab
-				right
-				@click="overlay = false"
-			>
-				<v-icon>close</v-icon>
-			</v-btn>
-		</v-overlay>
-		</v-card-actions>
-	</v-card>
+				</v-autocomplete>
+				<v-fab-transition>
+					<v-btn
+						v-show="loaded"
+						color="grey"
+						absolute
+						icon
+						top
+						right
+						@click="overlay = !overlay"
+					>
+						<v-icon>info</v-icon>
+					</v-btn>
+				</v-fab-transition>
+				<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+					<p style="margin: 30px;" class="text-justify">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+						ultricies lorem quam, eget vehicula elit tincidunt nec. Proin auctor
+						ac enim sed lobortis. Donec sed accumsan risus, sed placerat ex.
+						Phasellus accumsan mi nec ex sagittis, a congue odio commodo. Cras
+						non congue enim, in vestibulum tortor. Fusce quis mattis mi, eget
+						interdum nibh. Sed auctor tempus dolor.
+					</p>
+					<v-btn
+						color="orange lighten-2"
+						absolute
+						fab
+						right
+						@click="overlay = false"
+					>
+						<v-icon>close</v-icon>
+					</v-btn>
+				</v-overlay>
+			</v-card-actions>
+		</v-card>
+	</v-skeleton-loader>
 </template>
 
 <script>
@@ -70,9 +76,11 @@ export default {
 		values: {
 			label: "Brasil",
 		},
-		items: [{
-			label: "Brasil",
-		}],
+		items: [
+			{
+				label: "Brasil",
+			},
+		],
 		chartData: null,
 		chartOptions: null,
 	}),

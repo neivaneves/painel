@@ -7,7 +7,7 @@
 		<v-card>
 			<v-row dense no-gutters>
 				<v-col :cols="12" :sm="4">
-					<v-list>
+					<v-list v-if="loaded">
 						<v-list two-line>
 							<v-list-item v-for="i of rank.slice(0, 6)" :key="i.estado">
 								<v-list-item-content>
@@ -24,19 +24,10 @@
 					</v-list>
 				</v-col>
 				<v-col :cols="12" :sm="8" dense>
-					<MapComponent :estados="rank" />
+					<MapBandeirasComponent :bairros="bairros" />
 				</v-col>
 			</v-row>
 			<v-card-actions>
-				<v-slider
-					v-model="dataLeitura"
-					:min="0"
-					:max="dataMaxIndex"
-					label="Data:"
-					dense
-					hide-details
-				/>
-				<p id="dataFormatada">{{ formatDate(parsedDataLeitura) }}</p>
 				<v-fab-transition>
 					<v-btn
 						v-show="loaded"
@@ -75,50 +66,27 @@
 </template>
 
 <script>
-import MapComponent from "./MapComponent";
+import MapBandeirasComponent from "./MapBandeirasComponent";
 
 export default {
-	name: "CardTempoDobrar",
+	name: "CardBandeiras",
 	data: () => ({
 		loaded: false,
 		overlay: false,
-		rank: [],
-		datas: [],
-		dataMaxIndex: null,
-		dataLeitura: null,
-		parsedDataLeitura: "",
-		allDataRaw: null,
+        rank: [],
+        bairros: [],
+        
 	}),
 	components: {
-		MapComponent,
+		MapBandeirasComponent,
 	},
 	async mounted() {
-		this.loaded = false;
-		const response = await fetch(
-			"https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/tempoDobrar"
-		);
-		const data = await response.json();
-		this.allDataRaw = data;
-		this.datas = data[19].SP.map((x) => x.data);
-		this.dataMaxIndex = this.datas.length;
-		this.dataLeitura = this.datas.length;
-		// console.log(this.datas);
-		for (let elt of data) {
-			let obj = Object.keys(elt)[0];
-			this.rank.push(
-				elt[obj].find((obj) => {
-					return obj.data == this.datas[this.datas.length - 1];
-				})
-			);
-		}
-		this.rank.sort(this.dynamicsort("tempoParaDobrar"));
+        this.loaded = false;
+		const geojsonBairros = require("../assets/Bairros_Niteroi");
+		this.bairros = geojsonBairros;
 		this.loaded = true;
 	},
 	methods: {
-		formatDate(date) {
-			const [day, month] = date.split("-").reverse();
-			return `${day}/${month}`;
-		},
 		dynamicsort(property, order = "asc") {
 			var sort_order = 1;
 			if (order === "desc") {
@@ -151,21 +119,6 @@ export default {
 		},
 	},
 	watch: {
-		dataLeitura: function(val) {
-			this.parsedDataLeitura = this.datas[
-				Math.min(
-					Math.floor((val / this.dataMaxIndex) * this.dataMaxIndex),
-					this.dataMaxIndex - 1
-				)
-			];
-			this.rankAll(this.allDataRaw, this.parsedDataLeitura);
-			this.rank = this.rank.filter(function(element) {
-				return element !== undefined;
-			});
-			this.rank = this.rank.filter(function(obj) {
-				return obj.tempoParaDobrar !== "0.00";
-			});
-		},
 	},
 };
 </script>
@@ -173,11 +126,9 @@ export default {
 <style scoped>
 .row {
 	padding: 5px;
+	padding-bottom: 0px;
 	padding-top: 10px;
-	margin-bottom: 4px;
-}
-.v-card {
-	padding-bottom: 5px;
+	margin-bottom: 0px;
 }
 .v-list {
 	padding-top: 0;

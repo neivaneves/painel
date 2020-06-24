@@ -1,51 +1,56 @@
 <template>
-	<v-card>
-		<ChartComponent
-			style="height: 445px;"
-			v-if="loaded"
-			:chartData="chartData"
-			:chartOptions="chartOptions"
-			:escala="log"
-		></ChartComponent>
-		<v-card-actions>
-			<v-autocomplete
-				deletableChips
-				v-model="values"
-				:items="items"
-				chips
-				multiple
-				solo
-				hide-details
-				return-object
-				item-text="label"
+	<v-skeleton-loader
+		:loading="!loaded"
+		height="400"
+		type="card-heading, card"
+	>
+		<v-card>
+			<ChartComponent
+				style="height: 445px;"
+				v-if="loaded"
+				:chartData="chartData"
+				:chartOptions="chartOptions"
+				:escala="log"
+			></ChartComponent>
+			<v-card-actions>
+				<v-autocomplete
+					deletableChips
+					v-model="values"
+					:items="items"
+					chips
+					multiple
+					solo
+					hide-details
+					return-object
+					item-text="label"
+				>
+				</v-autocomplete>
+			</v-card-actions>
+			<v-btn
+				v-if="log"
+				v-show="loaded"
+				color="green lighten-1"
+				absolute
+				top
+				left
+				small
+				@click="log = !log"
 			>
-			</v-autocomplete>
-		</v-card-actions>
-				<v-btn 
-					v-if="log"
-					v-show="loaded"
-					color="green lighten-1"
-					absolute
-					top
-					left
-					small
-					@click="log = !log"
-				>
 				log
-				</v-btn>
-				<v-btn 
-					v-if="!log"
-					v-show="loaded"
-					color="red lighten-1"
-					absolute
-					top
-					left
-					small
-					@click="log = !log"
-				>
+			</v-btn>
+			<v-btn
+				v-if="!log"
+				v-show="loaded"
+				color="red lighten-1"
+				absolute
+				top
+				left
+				small
+				@click="log = !log"
+			>
 				linear
-				</v-btn>
-					<v-fab-transition>
+			</v-btn>
+			<v-fab-transition>
 				<v-btn
 					v-show="loaded"
 					color="grey"
@@ -58,26 +63,27 @@
 					<v-icon>info</v-icon>
 				</v-btn>
 			</v-fab-transition>
-		<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
-			<p style="margin: 30px;" class="text-justify">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
-				lorem quam, eget vehicula elit tincidunt nec. Proin auctor ac enim sed
-				lobortis. Donec sed accumsan risus, sed placerat ex. Phasellus accumsan
-				mi nec ex sagittis, a congue odio commodo. Cras non congue enim, in
-				vestibulum tortor. Fusce quis mattis mi, eget interdum nibh. Sed auctor
-				tempus dolor.
-			</p>
-			<v-btn
-				color="orange lighten-2"
-				absolute
-				fab
-				right
-				@click="overlay = false"
-			>
-				<v-icon>close</v-icon>
-			</v-btn>
-		</v-overlay>
-	</v-card>
+			<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+				<p style="margin: 30px;" class="text-justify">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
+					lorem quam, eget vehicula elit tincidunt nec. Proin auctor ac enim sed
+					lobortis. Donec sed accumsan risus, sed placerat ex. Phasellus
+					accumsan mi nec ex sagittis, a congue odio commodo. Cras non congue
+					enim, in vestibulum tortor. Fusce quis mattis mi, eget interdum nibh.
+					Sed auctor tempus dolor.
+				</p>
+				<v-btn
+					color="orange lighten-2"
+					absolute
+					fab
+					right
+					@click="overlay = false"
+				>
+					<v-icon>close</v-icon>
+				</v-btn>
+			</v-overlay>
+		</v-card>
+	</v-skeleton-loader>
 </template>
 
 <script>
@@ -502,7 +508,7 @@ export default {
 		},
 		log: function() {
 			const escala = this.log ? "logarithmic" : "linear";
-			Vue.set(this.chartOptions.scales.yAxes[0], "type", escala)
+			Vue.set(this.chartOptions.scales.yAxes[0], "type", escala);
 		},
 		addTodos: function() {
 			let newDataset = [];

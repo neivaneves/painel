@@ -34,13 +34,13 @@
 </template>
 
 <script>
-import CardObitos from "./CardObitos";
-// import CardPeriodo from "./CardPeriodo";
-import CardCrescimento from "./CardCrescimento";
-import CardTempoDobrar from "./CardTempoDobrar";
-import CardInfectados from "./CardInfectados";
-import CardRecentes from "./CardRecentes";
-import CardCompObitos from "./CardCompObitos"
+import CardObitos from "../components/CardObitos";
+// import CardPeriodo from "../components/CardPeriodo";
+import CardCrescimento from "../components/CardCrescimento";
+import CardTempoDobrar from "../components/CardTempoDobrar";
+import CardInfectados from "../components/CardInfectados";
+import CardRecentes from "../components/CardRecentes";
+import CardCompObitos from "../components/CardCompObitos"
 
 export default {
 	name: "DashboardContents",

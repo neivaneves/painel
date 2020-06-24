@@ -1,78 +1,84 @@
 <template>
-	<v-card v-if="loaded">
-		<v-card-text>
-			<div v-if="multiple">Casos novos no período:</div>
-			<div v-else>Novos casos no dia:</div>
-			<p class="display-1 text--primary">
-				{{ casosPeriodo }}
-			</p>
-			<div v-if="multiple">Óbitos novos no período:</div>
-			<div v-else>Novos óbitos no dia:</div>
-			<p class="display-1 text--primary">
-				{{ obitosPeriodo }}
-			</p>
-		</v-card-text>
-		<v-card-actions>
-			<v-menu
-				ref="menu"
-				v-model="menu"
-				:close-on-content-click="false"
-				transition="scale-transition"
-				offset-y
-				min-width="290px"
-			>
-				<template v-slot:activator="{ on }">
-					<v-text-field
-						v-model="dateRangeText"
-						label="Período"
-						prepend-icon="event"
-						readonly
-						v-on="on"
-						hide-details
-					></v-text-field>
-				</template>
-				<v-date-picker
-					v-model="dates"
-					range
-					locale="brazil"
-					:min="min"
-					:max="max"
-				>
-					<v-spacer></v-spacer>
-					<v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
-					<v-btn text color="primary" @click="save(dates)">OK</v-btn>
-				</v-date-picker>
-			</v-menu>
-			<v-fab-transition>
-				<v-btn
-					v-show="loaded"
-					color="grey"
-					absolute
-					icon
-					top
-					right
-					@click="overlay = !overlay"
-				>
-					<v-icon>info</v-icon>
-				</v-btn>
-			</v-fab-transition>
-			<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
-				<p style="margin: 30px;" class="text-justify">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ultricies
-					lorem quam, eget vehicula elit tincidunt nec.
+	<v-skeleton-loader
+		:loading="!loaded"
+		height="400"
+		type="card-heading, card"
+	>
+		<v-card v-if="loaded">
+			<v-card-text>
+				<div v-if="multiple">Casos novos no período:</div>
+				<div v-else>Novos casos no dia:</div>
+				<p class="display-1 text--primary">
+					{{ casosPeriodo }}
 				</p>
-				<v-btn
-					color="orange lighten-2"
-					absolute
-					fab
-					right
-					@click="overlay = false"
+				<div v-if="multiple">Óbitos novos no período:</div>
+				<div v-else>Novos óbitos no dia:</div>
+				<p class="display-1 text--primary">
+					{{ obitosPeriodo }}
+				</p>
+			</v-card-text>
+			<v-card-actions>
+				<v-menu
+					ref="menu"
+					v-model="menu"
+					:close-on-content-click="false"
+					transition="scale-transition"
+					offset-y
+					min-width="290px"
 				>
-					<v-icon>close</v-icon>
-				</v-btn>
-			</v-overlay>
-		</v-card-actions>
-	</v-card>
+					<template v-slot:activator="{ on }">
+						<v-text-field
+							v-model="dateRangeText"
+							label="Período"
+							prepend-icon="event"
+							readonly
+							v-on="on"
+							hide-details
+						></v-text-field>
+					</template>
+					<v-date-picker
+						v-model="dates"
+						range
+						locale="brazil"
+						:min="min"
+						:max="max"
+					>
+						<v-spacer></v-spacer>
+						<v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
+						<v-btn text color="primary" @click="save(dates)">OK</v-btn>
+					</v-date-picker>
+				</v-menu>
+				<v-fab-transition>
+					<v-btn
+						v-show="loaded"
+						color="grey"
+						absolute
+						icon
+						top
+						right
+						@click="overlay = !overlay"
+					>
+						<v-icon>info</v-icon>
+					</v-btn>
+				</v-fab-transition>
+				<v-overlay :absolute="true" :opacity="0.9" :value="overlay">
+					<p style="margin: 30px;" class="text-justify">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+						ultricies lorem quam, eget vehicula elit tincidunt nec.
+					</p>
+					<v-btn
+						color="orange lighten-2"
+						absolute
+						fab
+						right
+						@click="overlay = false"
+					>
+						<v-icon>close</v-icon>
+					</v-btn>
+				</v-overlay>
+			</v-card-actions>
+		</v-card>
+	</v-skeleton-loader>
 </template>
 
 <script>
@@ -97,8 +103,8 @@ export default {
 		);
 		const msData = await response.json();
 		this.fetchData = msData;
-		console.log(this.fetchData)
-		const maxIndex = this.fetchData.length - 1;
+		console.log(this.fetchData);
+		// const maxIndex = this.fetchData.length - 1;
 		this.dates = [this.min, this.max];
 		// console.log(this.fetchData);
 		// console.log(this.dates.length);
@@ -168,14 +174,12 @@ export default {
 				const findIdParsedI = this.parsedDate(findIdI);
 				const casosI = this.fetchData.find((x) => x._id == findIdParsedI)
 					.casosAcumulado;
-				const casosINovos = this.fetchData.find(
-					(x) => x._id == findIdParsedI
-				).casosNovos;
+				const casosINovos = this.fetchData.find((x) => x._id == findIdParsedI)
+					.casosNovos;
 				const obitosI = this.fetchData.find((x) => x._id == findIdParsedI)
 					.obitosAcumulado;
-				const obitosINovos = this.fetchData.find(
-					(x) => x._id == findIdParsedI
-				).obitosNovos;
+				const obitosINovos = this.fetchData.find((x) => x._id == findIdParsedI)
+					.obitosNovos;
 				const findIdF = this.dates[1];
 				const findIdParsedF = this.parsedDate(findIdF);
 				const casosF = this.fetchData.find((x) => x._id == findIdParsedF)

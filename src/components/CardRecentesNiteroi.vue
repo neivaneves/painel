@@ -176,7 +176,7 @@ export default {
 		chartOptions: null,
 		chartData: null,
 		overlay: false,
-		value: "Brasil",
+		value: "NITEROI",
 		dates: [],
 		menu: false,
 		min: null,
@@ -184,29 +184,26 @@ export default {
 	}),
 	async created() {
 		this.loaded = false;
-		const todasAsRegioes = await fetch(
-			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/todasAsRegioes?arg1=regioes`
+		const responseLabelsBairros = await fetch(
+			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeLabelsBairros`
 		);
-		const dadosRegioes = await todasAsRegioes.json();
-		this.items = dadosRegioes[0].ids;
-		const request = this.textToUrl(this.value);
+		const labelsBairros = await responseLabelsBairros.json();
+		this.items = labelsBairros.labels;
 		const response = await fetch(
-			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/todasAsRegioes?arg1=${request}`
+			`http://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
 		);
 		const dadosDaRegiao = await response.json();
 		this.fetchData = dadosDaRegiao[0];
 		let dataCasos = [];
 		let dataObitos = [];
-		let labels = [];
 		for (let elt of dadosDaRegiao[0].data) {
-			labels.push(elt.data);
 			const dpCasos = {
-				x: elt.data,
-				y: elt.casosNovos,
+				x: elt.dia,
+				y: elt.casosNovos.$numberInt,
 			};
 			const dpObitos = {
-				x: elt.data,
-				y: elt.obitosNovos,
+				x: elt.dia,
+				y: elt.obitosNovos.$numberInt,
 			};
 			dataCasos.push(dpCasos);
 			dataObitos.push(dpObitos);
@@ -214,20 +211,20 @@ export default {
 		this.datasetCasos = [
 			{
 				data: dataCasos,
-				backgroundColor: "indigo",
-				borderColor: "indigo",
+				backgroundColor: "#6971c9",
+				borderColor: "#6971c9",
 				label: "Novos Casos",
 				pointRadius: 0,
 				borderWidth: 2,
 				pointHitRadius: 10,
 				fill: false,
 			},
-		];
+        ];
 		this.datasetObitos = [
 			{
 				data: dataObitos,
-				backgroundColor: "orange",
-				borderColor: "orange",
+				backgroundColor: "#ba4a4f",
+				borderColor: "#ba4a4f",
 				label: "Novos Óbitos",
 				pointRadius: 0,
 				pointHitRadius: 10,
@@ -285,16 +282,16 @@ export default {
 		});
 		const ds = this.plot ? this.datasetCasos : this.datasetObitos;
 		this.chartData = {
-			labels: labels,
 			datasets: ds,
 		};
-		const indexView = dadosDaRegiao[0].data.length - 1;
-		this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos;
-		this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos;
-		this.casosTotais = dadosDaRegiao[0].data[indexView].casosAcumulado;
-		this.obitosTotais = dadosDaRegiao[0].data[indexView].obitosAcumulado;
-		this.dates.push(dadosDaRegiao[0].data[0].data);
-		this.dates.push(dadosDaRegiao[0].data[indexView].data);
+        const indexView = dadosDaRegiao[0].data.length - 1;
+
+		this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos.$numberInt;
+		this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos.$numberInt;
+		this.casosTotais = dadosDaRegiao[0].data[indexView].casosAcumulado.$numberInt;
+		this.obitosTotais = dadosDaRegiao[0].data[indexView].obitosAcumulado.$numberInt;
+		this.dates.push(dadosDaRegiao[0].data[0].dia);
+		this.dates.push(dadosDaRegiao[0].data[indexView].dia);
 		this.min = this.dates[0];
 		this.max = this.dates[1];
 		this.chartOptions = {
@@ -303,7 +300,7 @@ export default {
 					{
 						type: "time",
 						time: {
-							unit: "day",
+							unit: "month",
 						},
 						ticks: {
 							min: this.min,
@@ -326,19 +323,16 @@ export default {
 			}
 			return false;
 		},
-		textToUrl(regiao) {
-			return regiao.replace(" ", "%20");
-		},
 		save(dates) {
 			if (this.dates.length == 1 || dates[0] === dates[1]) {
 				this.janela = false;
 				const indexCasosF = this.fetchData.data.findIndex(
-					(a) => a.data == dates[0]
-				);
-				const casosFNovos = this.fetchData.data[indexCasosF].casosNovos;
-				const casosF = this.fetchData.data[indexCasosF].casosAcumulado;
-				const obitosFNovos = this.fetchData.data[indexCasosF].obitosNovos;
-				const obitosF = this.fetchData.data[indexCasosF].obitosAcumulado;
+					(a) => a.dia == dates[0]
+                );
+				const casosFNovos = this.fetchData.data[indexCasosF].casosNovos.$numberInt;
+				const casosF = this.fetchData.data[indexCasosF].casosAcumulado.$numberInt;
+				const obitosFNovos = this.fetchData.data[indexCasosF].obitosNovos.$numberInt;
+				const obitosF = this.fetchData.data[indexCasosF].obitosAcumulado.$numberInt;
 				this.casosTotais = casosF;
 				this.obitosTotais = obitosF;
 				this.casosNovos = casosFNovos;
@@ -348,14 +342,14 @@ export default {
 			} else {
 				this.janela = true;
 				const indexCasosI = this.fetchData.data.findIndex(
-					(a) => a.data == dates[0]
+					(a) => a.dia == dates[0]
 				);
-				const casosINovos = this.fetchData.data[indexCasosI].casosNovos;
-				const casosI = this.fetchData.data[indexCasosI].casosAcumulado;
-				const obitosINovos = this.fetchData.data[indexCasosI].obitosNovos;
-				const obitosI = this.fetchData.data[indexCasosI].obitosAcumulado;
+				const casosINovos = this.fetchData.data[indexCasosI].casosNovos.$numberInt;
+				const casosI = this.fetchData.data[indexCasosI].casosAcumulado.$numberInt;
+				const obitosINovos = this.fetchData.data[indexCasosI].obitosNovos.$numberInt;
+				const obitosI = this.fetchData.data[indexCasosI].obitosAcumulado.$numberInt;
 				const indexCasosF = this.fetchData.data.findIndex(
-					(a) => a.data == dates[1]
+					(a) => a.dia == dates[1]
 				);
 				// const casosFNovos = this.fetchData.data[indexCasosF].casosNovos;
 				const casosF = this.fetchData.data[indexCasosF].casosAcumulado;
@@ -380,9 +374,8 @@ export default {
 	},
 	watch: {
 		value: async function() {
-			const request = this.textToUrl(this.value);
 			const response = await fetch(
-				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/todasAsRegioes?arg1=${request}`
+				`http://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
 			);
 			const dadosDaRegiao = await response.json();
 			this.fetchData = dadosDaRegiao[0];
@@ -390,12 +383,12 @@ export default {
 			const dataObitos = [];
 			for (let elt of dadosDaRegiao[0].data) {
 				const dpCasos = {
-					x: elt.data,
-					y: elt.casosNovos,
+					x: elt.dia,
+					y: elt.casosNovos.$numberInt,
 				};
 				const dpObitos = {
-					x: elt.data,
-					y: elt.obitosNovos,
+					x: elt.dia,
+					y: elt.obitosNovos.$numberInt,
 				};
 				dataCasos.push(dpCasos);
 				dataObitos.push(dpObitos);
@@ -475,10 +468,10 @@ export default {
 			const ds = this.plot ? this.datasetCasos : this.datasetObitos;
 			this.chartData.datasets = ds;
 			const indexView = dadosDaRegiao[0].data.length - 1;
-			this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos;
-			this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos;
-			this.casosTotais = dadosDaRegiao[0].data[indexView].casosAcumulado;
-			this.obitosTotais = dadosDaRegiao[0].data[indexView].obitosAcumulado;
+			this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos.$numberInt;
+			this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos.$numberInt;
+			this.casosTotais = dadosDaRegiao[0].data[indexView].casosAcumulado.$numberInt;
+			this.obitosTotais = dadosDaRegiao[0].data[indexView].obitosAcumulado.$numberInt;
 		},
 		plot: function() {
 			const ds = this.plot ? this.datasetCasos : this.datasetObitos;
