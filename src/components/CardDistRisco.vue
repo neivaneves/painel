@@ -153,6 +153,7 @@ export default {
 				datasets[1].data.push({
 					x: parseFloat(regiao.data.x.$numberDouble),
 					y: parseFloat(regiao.data.y.$numberDouble),
+					label: regiao.regiao,
 				});
 			}
 		}
@@ -166,6 +167,25 @@ export default {
 			},
 			legend: {
 				display: false,
+			},
+			tooltips: {
+				// intersect: true,
+				custom: function(tooltip) {
+					if (!tooltip) return;
+					// disable displaying the color box;
+					tooltip.displayColors = false;
+				},
+				callbacks: {
+					// title: function(tooltipItems, data) {
+					// 	console.log(tooltipItems, data);
+					// 	return "";
+					// },
+					label: function(tooltipItem, data) {
+						const label = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].label 
+						return label;
+						// }
+					},
+				},
 			},
 			scales: {
 				xAxes: [
