@@ -1,31 +1,31 @@
 <template>
 	<v-container fluid>
 		<v-row dense>
-			<v-col :md="8" >
+			<v-col :cols="12" :md="8" >
 				<CardBandeiras />
 			</v-col>
-			<v-col :md="4" >
+			<v-col :cols="12" :md="4" >
 				<CardDistRisco />
 			</v-col>
-			<v-col :md="4" >
+			<v-col :cols="12" :md="4" >
 				<CardRecentesNiteroi />
 			</v-col>
-			<v-col :md="8" >
+			<v-col :cols="12" :md="8" >
 				<CardIsolamento />
 			</v-col>
-			<v-col :md="4" >
+			<v-col :cols="12" :md="4" >
 				<CardCasosObitos />
 			</v-col>
-			<v-col :md="8" >
+			<v-col :cols="12" :md="8" >
 				<CardMorbidadeMortalidade />
 			</v-col>
-			<v-col :md="4" >
+			<v-col :cols="12" :md="4" >
 				<CardInternacoes />
 			</v-col>
-			<v-col :md="4" >
+			<v-col :cols="12" :md="4" >
 				<CardDensidade />
 			</v-col>
-			<v-col :md="4" >
+			<v-col :cols="12" :md="4" >
 				<CardRenda />
 			</v-col>
 		</v-row>
