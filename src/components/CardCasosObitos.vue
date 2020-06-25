@@ -111,7 +111,7 @@ export default {
 		this.items = labelsBairros.labels;
 		const queryData = this.values.join(",");
 		const responseData = await fetch(
-			`http://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${queryData}`
+			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${queryData}`
 		);
 		const dataCasosObitos = await responseData.json();
 		let datasets = [];
