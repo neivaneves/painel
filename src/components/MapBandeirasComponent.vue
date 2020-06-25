@@ -1,6 +1,12 @@
 <template>
-	<div style="height: 420px; width: 99%">
-		<l-map style="z-index: 0;" v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions">
+	<div style="height: 397px; width: 99%">
+		<l-map
+			style="z-index: 0;"
+			v-if="showMap"
+			:zoom="zoom"
+			:center="center"
+			:options="mapOptions"
+		>
 			<l-tile-layer :url="url" :attribution="attribution" />
 			<l-geo-json
 				v-for="jsonBairros of bairros.features"
@@ -8,6 +14,7 @@
 				:geojson="jsonBairros"
 				:options-style="jsonBairros.properties.style"
 				:options="options"
+				@click="select(jsonBairros.properties.nome)"
 			/>
 		</l-map>
 	</div>
@@ -66,6 +73,12 @@ export default {
 					{ permanent: false, sticky: true }
 				);
 			};
+		},
+	},
+	methods: {
+		select(regiao) {
+			// console.log(regiao, this.$store)
+			this.$store.commit('select', regiao)
 		},
 	},
 	watch: {

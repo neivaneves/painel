@@ -56,6 +56,7 @@ export default {
 		overlay: false,
 		chartData: null,
 		chartOptions: null,
+		apiR: null,
 	}),
 	async mounted() {
 		this.loaded = false;
@@ -63,11 +64,12 @@ export default {
 			"https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeDistRisc"
 		);
 		const dataRisco = await response.json();
+		this.apiR = dataRisco;
 		let datasets = [
 			{
-				label: "NITEROI",
+				label: "",
 				data: [],
-				backgroundColor: "#5e3c99",
+				backgroundColor: "#1c1c1c",
 				pointRadius: 8,
 			},
 			{
@@ -148,6 +150,7 @@ export default {
 				datasets[0].data.push({
 					x: parseFloat(regiao.data.x.$numberDouble),
 					y: parseFloat(regiao.data.y.$numberDouble),
+					label: regiao.regiao,
 				});
 			} else {
 				datasets[1].data.push({
@@ -168,6 +171,9 @@ export default {
 			legend: {
 				display: false,
 			},
+			animation: {
+				duration: 0, // general animation time
+			},
 			tooltips: {
 				// intersect: true,
 				custom: function(tooltip) {
@@ -181,7 +187,9 @@ export default {
 					// 	return "";
 					// },
 					label: function(tooltipItem, data) {
-						const label = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].label 
+						const label =
+							data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+								.label;
 						return label;
 						// }
 					},
@@ -220,6 +228,42 @@ export default {
 	methods: {
 		hip(x, k) {
 			return k / x;
+		},
+	},
+	watch: {
+		state: function(a) {
+			this.chartData.datasets.splice(0, 2);
+			this.chartData.datasets.unshift({
+				label: "",
+				data: [],
+				pointRadius: 5,
+			});
+			this.chartData.datasets.unshift({
+				label: "",
+				data: [],
+				backgroundColor: "#1c1c1c",
+				pointRadius: 8,
+			});
+			for (let regiao of this.apiR) {
+				if (regiao.regiao === a) {
+					this.chartData.datasets[0].data.push({
+						x: parseFloat(regiao.data.x.$numberDouble),
+						y: parseFloat(regiao.data.y.$numberDouble),
+						label: regiao.regiao,
+					});
+				} else {
+					this.chartData.datasets[1].data.push({
+						x: parseFloat(regiao.data.x.$numberDouble),
+						y: parseFloat(regiao.data.y.$numberDouble),
+						label: regiao.regiao,
+					});
+				}
+			}
+		},
+	},
+	computed: {
+		state() {
+			return this.$store.state.regiao;
 		},
 	},
 };

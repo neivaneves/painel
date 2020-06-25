@@ -396,8 +396,8 @@ export default {
 			this.datasetCasos = [
 				{
 					data: dataCasos,
-					backgroundColor: "indigo",
-					borderColor: "indigo",
+					backgroundColor: "#6971c9",
+					borderColor: "#6971c9",
 					label: "Novos Casos",
 					pointRadius: 0,
 					borderWidth: 2,
@@ -408,8 +408,8 @@ export default {
 			this.datasetObitos = [
 				{
 					data: dataObitos,
-					backgroundColor: "orange",
-					borderColor: "orange",
+					backgroundColor: "#ba4a4f",
+					borderColor: "#ba4a4f",
 					label: "Novos Óbitos",
 					pointRadius: 0,
 					pointHitRadius: 15,
@@ -477,6 +477,9 @@ export default {
 			const ds = this.plot ? this.datasetCasos : this.datasetObitos;
 			this.chartData.datasets = ds;
 		},
+		state: function(a) {
+			this.value = a
+		},
 	},
 	computed: {
 		dateRangeText() {
@@ -484,6 +487,9 @@ export default {
 			a.push(this.parsedDate(this.dates[0]));
 			a.push(this.parsedDate(this.dates[1]));
 			return a.join(" a ");
+		},
+		state() {
+			return this.$store.state.regiao
 		},
 	},
 };

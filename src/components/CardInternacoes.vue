@@ -241,7 +241,15 @@ export default {
 		};
 		this.loaded = true;
 	},
+	computed: {
+		state() {
+			return this.$store.state.regiao
+		},
+	},
 	watch: {
+		state: function(a) {
+			this.values = [a]
+		},
 		selectEnfUti: async function() {
 			this.quering = true;
             this.leitos = [];

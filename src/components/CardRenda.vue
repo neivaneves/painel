@@ -145,7 +145,15 @@ export default {
 		};
 		this.loaded = true;
 	},
+	computed: {
+		state() {
+			return this.$store.state.regiao
+		},
+	},
 	watch: {
+		state: function(a) {
+			this.value = a
+		},
 		value: async function() {
 			this.quering = true;
 			const response = await fetch(

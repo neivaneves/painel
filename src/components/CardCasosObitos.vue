@@ -187,11 +187,19 @@ export default {
 		};
 		this.loaded = true;
 	},
+	computed: {
+		state() {
+			return this.$store.state.regiao
+		},
+	},
 	watch: {
         log: function() {
             const escala = this.log ? "logarithmic" : "linear";
             this.chartOptions.scales.yAxes[0].type = escala;
-        },
+		},
+		state: function(a) {
+			this.values = [a]
+		},
 		values: async function(newVal) {
 			this.quering = true;
 			const queryData = newVal.join(",");

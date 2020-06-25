@@ -9,7 +9,7 @@
 			></ChartComponent>
 			<v-card-actions>
 				<v-autocomplete
-                    :loading="quering"
+					:loading="quering"
 					deletableChips
 					v-model="values"
 					:items="items"
@@ -68,8 +68,8 @@ export default {
 	},
 	data: () => ({
 		loaded: false,
-        overlay: false,
-        quering: false,
+		overlay: false,
+		quering: false,
 		chartData: null,
 		chartOptions: null,
 		items: null,
@@ -139,7 +139,7 @@ export default {
 	},
 	watch: {
 		values: async function(newVal) {
-            this.quering = true;
+			this.quering = true;
 			const queryIsolamento = newVal.join(",");
 			const responseIsolamento = await fetch(
 				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=isolamento&arg2=${queryIsolamento}`
@@ -170,8 +170,16 @@ export default {
 			}
 			this.chartData = {
 				datasets: datasets,
-            };
-            this.quering = false;
+			};
+			this.quering = false;
+		},
+		state: function(a) {
+			this.values = [a]
+		},
+	},
+	computed: {
+		state() {
+			return this.$store.state.regiao
 		},
 	},
 };

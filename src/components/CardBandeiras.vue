@@ -1,6 +1,9 @@
 <template>
 	<v-skeleton-loader :loading="!loaded" height="400" type="card-heading, card">
 		<v-card>
+			<v-card-text style="padding-bottom: 0px">
+				Selecione a região no mapa:
+			</v-card-text>
 			<v-row dense no-gutters>
 				<v-col :cols="12" :sm="4">
 					<v-list v-if="loaded">
@@ -9,8 +12,8 @@
 								<v-list-item-content>
 									<v-list-item-title v-text="i.regiao"></v-list-item-title>
 									<v-list-item-subtitle
-										>Risco: 
-										<v-chip small :color="getColor(i.risco)" >{{
+										>Risco:
+										<v-chip small :color="getColor(i.risco)">{{
 											parseFloat(i.risco).toFixed(2)
 										}}</v-chip>
 									</v-list-item-subtitle>
@@ -20,10 +23,18 @@
 					</v-list>
 				</v-col>
 				<v-col :cols="12" :sm="8" dense>
-					<MapBandeirasComponent :bairros="bairros" />
+					<MapBandeirasComponent v-if="loaded" :bairros="bairros" />
 				</v-col>
 			</v-row>
-			<v-card-actions>
+			<v-card-actions style="padding: 0px">
+				<v-snackbar v-model="snackbar" :timeout="timeout">
+					Você pode alterar todos os cards interagindo com o mapa.
+					<template v-slot:action="{ attrs }">
+						<v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+							Close
+						</v-btn>
+					</template>
+				</v-snackbar>
 				<v-fab-transition>
 					<v-btn
 						v-show="loaded"
@@ -68,16 +79,17 @@ export default {
 	name: "CardBandeiras",
 	data: () => ({
 		loaded: false,
+		snackbar: false,
+		timeout: 5000,
 		overlay: false,
-        rank: [],
-        bairros: [],
-
+		rank: [],
+		bairros: null,
 	}),
 	components: {
 		MapBandeirasComponent,
 	},
 	async mounted() {
-        this.loaded = false;
+		this.loaded = false;
 		let geojsonBairros = require("../assets/Bairros_Niteroi");
 		const response = await fetch(
 			"https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeDistRisc"
@@ -88,10 +100,13 @@ export default {
 				if (feature.properties.nome === regiao.regiao) {
 					feature.properties.style = {
 						fillOpacity: 0.5,
-						color: this.getColor(regiao.data.x.$numberDouble * regiao.data.y.$numberDouble),
+						color: this.getColor(
+							regiao.data.x.$numberDouble * regiao.data.y.$numberDouble
+						),
 						weight: 1,
-					}
-					feature.properties.risco = regiao.data.x.$numberDouble * regiao.data.y.$numberDouble;
+					};
+					feature.properties.risco =
+						regiao.data.x.$numberDouble * regiao.data.y.$numberDouble;
 				}
 			}
 		}
@@ -99,15 +114,14 @@ export default {
 		for (let regiao of dataRisco) {
 			rank.push({
 				regiao: regiao.regiao,
-				risco: regiao.data.x.$numberDouble * regiao.data.y.$numberDouble
-			})
+				risco: regiao.data.x.$numberDouble * regiao.data.y.$numberDouble,
+			});
 		}
-		rank.sort((a, b) =>
-			parseFloat(a.risco) < parseFloat(b.risco) ? 1 : -1
-        );
+		rank.sort((a, b) => (parseFloat(a.risco) < parseFloat(b.risco) ? 1 : -1));
 		this.rank = rank;
-		this.bairros = geojsonBairros
+		this.bairros = geojsonBairros;
 		this.loaded = true;
+		this.snackbar = true;
 	},
 	methods: {
 		getColor(d) {
@@ -117,10 +131,26 @@ export default {
 				? "#fd8d3c"
 				: d > 1
 				? "#fecc5c" //mais claro
-				: "ffffb2"
-		}
+				: "ffffb2";
+		},
+	},
+	computed: {
+		state() {
+			return this.$store.state.regiao;
+		},
 	},
 	watch: {
+		state: function(a) {
+			for (let feature of this.bairros.features) {
+				if (feature.properties.nome === a) {
+					feature.properties.style.weight = 5;
+					feature.properties.style.fillOpacity = 0.7;
+				} else {
+					feature.properties.style.weight = 1;
+					feature.properties.style.fillOpacity = 0.5;
+				}
+			}
+		},
 	},
 };
 </script>
@@ -134,8 +164,6 @@ export default {
 }
 .v-list {
 	padding-top: 0;
-}
-#dataFormatada {
-	padding-left: 5px;
+	padding-bottom: 0px;
 }
 </style>
