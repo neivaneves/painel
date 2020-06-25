@@ -60,8 +60,8 @@ export default {
 				layer.bindTooltip(
 					"<div>Bairro:" +
 						feature.properties.nome +
-						"</div><div>Bandeira: " +
-						feature.properties.regiao +
+						"</div><div>Risco: " +
+						feature.properties.risco.toFixed(2) +
 						"</div>",
 					{ permanent: false, sticky: true }
 				);

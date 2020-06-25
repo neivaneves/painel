@@ -33,7 +33,7 @@
 							</span>
 						</v-btn>
 					</v-col>
-					<!-- <v-spacer></v-spacer> -->
+					<v-spacer></v-spacer>
 					<v-col>
 						<v-btn
 							style="width: 240px; margin: 10px; margin-bottom: 0px"
@@ -131,7 +131,12 @@ export default {
 		fetchData: null,
 		quering: false,
 		overlay: false,
-		coef: null,
+		coef: {
+			incidencia: 0,
+			prevalencia: 0,
+			mortalidade: 0,
+			letalidade: 0,
+		},
 	}),
 	async mounted() {
 		this.loaded = false;

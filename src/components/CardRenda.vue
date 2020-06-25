@@ -201,14 +201,14 @@ export default {
 				},
 				title: {
 					display: true,
-					text: "Pessoas por domicílio",
+					text: "Renda média",
 				},
 			};
 			this.rendaMed = {
 				labels: labels,
 				datasets: [
 					{
-						label: "Pessoas por domicílio",
+						label: "Renda média",
 						data: data,
 						backgroundColor: cores,
 						borderColor: cores,
