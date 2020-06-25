@@ -190,7 +190,7 @@ export default {
 		const labelsBairros = await responseLabelsBairros.json();
 		this.items = labelsBairros.labels;
 		const response = await fetch(
-			`http://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
+			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
 		);
 		const dadosDaRegiao = await response.json();
 		this.fetchData = dadosDaRegiao[0];
@@ -375,7 +375,7 @@ export default {
 	watch: {
 		value: async function() {
 			const response = await fetch(
-				`http://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
+				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
 			);
 			const dadosDaRegiao = await response.json();
 			this.fetchData = dadosDaRegiao[0];

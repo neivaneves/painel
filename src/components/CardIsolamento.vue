@@ -85,7 +85,7 @@ export default {
 		this.items = labelsBairros.labels;
 		const queryIsolamento = this.values.join(",");
 		const responseIsolamento = await fetch(
-			`http://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=isolamento&arg2=${queryIsolamento}`
+			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=isolamento&arg2=${queryIsolamento}`
 		);
 		const dataIsolamento = await responseIsolamento.json();
 		let datasets = [];
@@ -142,7 +142,7 @@ export default {
             this.quering = true;
 			const queryIsolamento = newVal.join(",");
 			const responseIsolamento = await fetch(
-				`http://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=isolamento&arg2=${queryIsolamento}`
+				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=isolamento&arg2=${queryIsolamento}`
 			);
 			const dataIsolamento = await responseIsolamento.json();
 			let datasets = [];
