@@ -100,10 +100,12 @@ export default {
 				if (feature.properties.nome === regiao.regiao) {
 					feature.properties.style = {
 						fillOpacity: 0.5,
-						color: this.getColor(
+						fillColor: this.getColor(
 							regiao.data.x.$numberDouble * regiao.data.y.$numberDouble
 						),
+						color: "white",
 						weight: 1,
+						dashArray: "3",
 					};
 					feature.properties.risco =
 						regiao.data.x.$numberDouble * regiao.data.y.$numberDouble;
@@ -143,10 +145,14 @@ export default {
 		state: function(a) {
 			for (let feature of this.bairros.features) {
 				if (feature.properties.nome === a) {
-					feature.properties.style.weight = 5;
+					feature.properties.style.color = "#3d3d3d";
+					feature.properties.style.dashArray = "0",
+					feature.properties.style.weight = 4;
 					feature.properties.style.fillOpacity = 0.7;
 				} else {
+					feature.properties.style.color = "white";
 					feature.properties.style.weight = 1;
+					feature.properties.style.dashArray = "3",
 					feature.properties.style.fillOpacity = 0.5;
 				}
 			}

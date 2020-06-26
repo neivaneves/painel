@@ -147,12 +147,12 @@ export default {
 	},
 	computed: {
 		state() {
-			return this.$store.state.regiao
+			return this.$store.state.regiao;
 		},
 	},
 	watch: {
 		state: function(a) {
-			this.value = a
+			this.value = a;
 		},
 		value: async function() {
 			this.quering = true;

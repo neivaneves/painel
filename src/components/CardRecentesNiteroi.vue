@@ -306,8 +306,20 @@ export default {
 							min: this.min,
 							max: this.max,
 						},
+						scaleLabel: {
+							display: true,
+							labelString: "Data",
+						},
 					},
 				],
+				yAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "# de óbitos / casos novos",
+						},
+					}
+				]
 			},
 			legend: {
 				labels: false,

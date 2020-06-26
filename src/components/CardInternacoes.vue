@@ -27,8 +27,8 @@
 				v-show="loaded"
 				color="green lighten-1"
 				absolute
-                :disabled="quering"
-                style="left: 40%; bottom: 80%; width: 120px"
+				:disabled="quering"
+				style="left: 40%; bottom: 80%; width: 120px"
 				small
 				@click="selectEnfUti = !selectEnfUti"
 			>
@@ -39,8 +39,8 @@
 				v-show="loaded"
 				color="red lighten-1"
 				absolute
-                :disabled="quering"
-                style="left: 40%; bottom: 80%; width: 120px"
+				:disabled="quering"
+				style="left: 40%; bottom: 80%; width: 120px"
 				small
 				@click="selectEnfUti = !selectEnfUti"
 			>
@@ -170,8 +170,8 @@ export default {
 			for (let regiao of dataHosp) {
 				let dpHosp = {
 					data: [],
-					backgroundColor: this.colors[colorIndex],
-					borderColor: this.colors[colorIndex],
+					backgroundColor: this.colors[colorIndex % 5],
+					borderColor: this.colors[colorIndex % 5],
 					label: regiao.regiao,
 					pointRadius: 0,
 					borderWidth: 2,
@@ -196,8 +196,8 @@ export default {
 			for (let regiao of dataHosp) {
 				let dpHosp = {
 					data: [],
-					backgroundColor: this.colors[colorIndex],
-					borderColor: this.colors[colorIndex],
+					backgroundColor: this.colors[colorIndex % 5],
+					borderColor: this.colors[colorIndex % 5],
 					label: regiao.regiao,
 					pointRadius: 0,
 					borderWidth: 2,
@@ -234,6 +234,18 @@ export default {
 							min: "2020-01-31",
 							max: "2020-06-20",
 						},
+						scaleLabel: {
+							display: true,
+							labelString: "Data",
+						},
+					},
+				],
+				yAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Leitos",
+						},
 					},
 				],
 			},
@@ -243,17 +255,17 @@ export default {
 	},
 	computed: {
 		state() {
-			return this.$store.state.regiao
+			return this.$store.state.regiao;
 		},
 	},
 	watch: {
 		state: function(a) {
-			this.values = [a]
+			this.values = [a];
 		},
 		selectEnfUti: async function() {
 			this.quering = true;
-            this.leitos = [];
-            const queryData = this.values.join(",");
+			this.leitos = [];
+			const queryData = "NITEROI"
 			const responseLeitos = await fetch(
 				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=props&arg2=${queryData}`
 			);
@@ -314,8 +326,8 @@ export default {
 				for (let regiao of dataHosp) {
 					let dpHosp = {
 						data: [],
-						backgroundColor: this.colors[colorIndex],
-						borderColor: this.colors[colorIndex],
+						backgroundColor: this.colors[colorIndex % 5],
+						borderColor: this.colors[colorIndex % 5],
 						label: regiao.regiao,
 						pointRadius: 0,
 						borderWidth: 2,
@@ -340,8 +352,8 @@ export default {
 				for (let regiao of dataHosp) {
 					let dpHosp = {
 						data: [],
-						backgroundColor: this.colors[colorIndex],
-						borderColor: this.colors[colorIndex],
+						backgroundColor: this.colors[colorIndex % 5],
+						borderColor: this.colors[colorIndex % 5],
 						label: regiao.regiao,
 						pointRadius: 0,
 						borderWidth: 2,
@@ -379,8 +391,8 @@ export default {
 				for (let regiao of dataHosp) {
 					let dpHosp = {
 						data: [],
-						backgroundColor: this.colors[colorIndex],
-						borderColor: this.colors[colorIndex],
+						backgroundColor: this.colors[colorIndex % 5],
+						borderColor: this.colors[colorIndex % 5],
 						label: regiao.regiao,
 						pointRadius: 0,
 						borderWidth: 2,
@@ -405,8 +417,8 @@ export default {
 				for (let regiao of dataHosp) {
 					let dpHosp = {
 						data: [],
-						backgroundColor: this.colors[colorIndex],
-						borderColor: this.colors[colorIndex],
+						backgroundColor: this.colors[colorIndex % 5],
+						borderColor: this.colors[colorIndex % 5],
 						label: regiao.regiao,
 						pointRadius: 0,
 						borderWidth: 2,

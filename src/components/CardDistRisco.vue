@@ -166,7 +166,7 @@ export default {
 		this.chartOptions = {
 			title: {
 				display: true,
-				text: "Scatterplot de risco",
+				text: "Scatter plot de risco",
 			},
 			legend: {
 				display: false,

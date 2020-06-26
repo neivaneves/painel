@@ -93,8 +93,8 @@ export default {
 		for (let regiao of dataIsolamento) {
 			let dpIsolamento = {
 				data: [],
-				backgroundColor: this.colors[colorIndex],
-				borderColor: this.colors[colorIndex],
+				backgroundColor: this.colors[colorIndex % 5],
+				borderColor: this.colors[colorIndex % 5],
 				label: regiao.regiao,
 				pointRadius: 0,
 				borderWidth: 2,
@@ -130,6 +130,18 @@ export default {
 							min: "2020-01-31",
 							max: "2020-06-20",
 						},
+						scaleLabel: {
+							display: true,
+							labelString: "Data",
+						},
+					},
+				],
+				yAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Índice de isolamento",
+						},
 					},
 				],
 			},
@@ -150,8 +162,8 @@ export default {
 			for (let regiao of dataIsolamento) {
 				let dpIsolamento = {
 					data: [],
-					backgroundColor: this.colors[colorIndex],
-					borderColor: this.colors[colorIndex],
+					backgroundColor: this.colors[colorIndex % 5],
+					borderColor: this.colors[colorIndex % 5],
 					label: regiao.regiao,
 					pointRadius: 0,
 					borderWidth: 2,
@@ -174,12 +186,12 @@ export default {
 			this.quering = false;
 		},
 		state: function(a) {
-			this.values = [a]
+			this.values = [a];
 		},
 	},
 	computed: {
 		state() {
-			return this.$store.state.regiao
+			return this.$store.state.regiao;
 		},
 	},
 };

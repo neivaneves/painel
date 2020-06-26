@@ -84,14 +84,12 @@ export default {
 		for (let regiao of responseProps) {
 			top.push({
 				regiao: regiao.regiao,
-				densidade: parseFloat(
-					regiao.props.rendaMedia.$numberDouble
-				).toFixed(2),
+				densidade: parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(2),
 			});
-        }
+		}
 		top.sort((a, b) =>
 			parseFloat(a.densidade) < parseFloat(b.densidade) ? 1 : -1
-        );
+		);
 		top.splice(0, 48);
 		let iValue = top.findIndex((x) => x.regiao === this.value);
 		if (iValue === -1) {
@@ -99,9 +97,7 @@ export default {
 			let dV = null;
 			for (let regiao of responseProps) {
 				if (regiao.regiao === this.value) {
-					dV = parseFloat(
-						regiao.props.rendaMedia.$numberDouble
-					).toFixed(2);
+					dV = parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(2);
 					break;
 				}
 			}
@@ -123,13 +119,13 @@ export default {
 			}
 		}
 		this.chartOptions = {
+			title: {
+				display: true,
+				text: "Renda média",
+			},
 			maintainAspectRatio: false,
 			legend: {
 				labels: false,
-			},
-			title: {
-				display: true,
-				text: "Renda Média",
 			},
 		};
 		this.rendaMed = {
@@ -147,12 +143,12 @@ export default {
 	},
 	computed: {
 		state() {
-			return this.$store.state.regiao
+			return this.$store.state.regiao;
 		},
 	},
 	watch: {
 		state: function(a) {
-			this.value = a
+			this.value = a;
 		},
 		value: async function() {
 			this.quering = true;
@@ -164,24 +160,22 @@ export default {
 			for (let regiao of responseProps) {
 				top.push({
 					regiao: regiao.regiao,
-					densidade: parseFloat(
-						regiao.props.rendaMedia.$numberDouble
-					).toFixed(2),
+					densidade: parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(
+						2
+					),
 				});
 			}
 			top.sort((a, b) =>
 				parseFloat(a.densidade) < parseFloat(b.densidade) ? 1 : -1
-            );
-            top.splice(0, 48);
+			);
+			top.splice(0, 48);
 			let iValue = top.findIndex((x) => x.regiao === this.value);
 			if (iValue === -1) {
 				top.splice(0, 1);
 				let dV = null;
 				for (let regiao of responseProps) {
 					if (regiao.regiao === this.value) {
-						dV = parseFloat(
-							regiao.props.rendaMedia.$numberDouble
-						).toFixed(2);
+						dV = parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(2);
 						break;
 					}
 				}
@@ -203,13 +197,13 @@ export default {
 				}
 			}
 			this.chartOptions = {
-				maintainAspectRatio: false,
-				legend: {
-					labels: false,
-				},
 				title: {
 					display: true,
 					text: "Renda média",
+				},
+				maintainAspectRatio: false,
+				legend: {
+					labels: false,
 				},
 			};
 			this.rendaMed = {

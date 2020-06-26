@@ -10,7 +10,7 @@
 			></ChartComponent>
 			<v-card-actions>
 				<v-autocomplete
-                    :loading="quering"
+					:loading="quering"
 					deletableChips
 					v-model="values"
 					:items="items"
@@ -119,8 +119,8 @@ export default {
 		for (let regiao of dataCasosObitos) {
 			let dpCasosObitos = {
 				data: [],
-				backgroundColor: this.colors[colorIndex],
-				borderColor: this.colors[colorIndex],
+				backgroundColor: this.colors[colorIndex % 5],
+				borderColor: this.colors[colorIndex % 5],
 				label: regiao.regiao,
 				pointRadius: 0,
 				borderWidth: 2,
@@ -157,6 +157,10 @@ export default {
 							min: "2020-01-31",
 							max: "2020-06-20",
 						},
+						scaleLabel: {
+							display: true,
+							labelString: "Data",
+						},
 					},
 				],
 				yAxes: [
@@ -173,6 +177,10 @@ export default {
 						// ticks: {
 						// 	max: max,
 						// },
+						scaleLabel: {
+							display: true,
+							labelString: "# de óbitos",
+						},
 					},
 				],
 			},
@@ -189,16 +197,16 @@ export default {
 	},
 	computed: {
 		state() {
-			return this.$store.state.regiao
+			return this.$store.state.regiao;
 		},
 	},
 	watch: {
-        log: function() {
-            const escala = this.log ? "logarithmic" : "linear";
-            this.chartOptions.scales.yAxes[0].type = escala;
+		log: function() {
+			const escala = this.log ? "logarithmic" : "linear";
+			this.chartOptions.scales.yAxes[0].type = escala;
 		},
 		state: function(a) {
-			this.values = [a]
+			this.values = [a];
 		},
 		values: async function(newVal) {
 			this.quering = true;
@@ -206,14 +214,14 @@ export default {
 			const responseData = await fetch(
 				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${queryData}`
 			);
-            const dataCasosObitos = await responseData.json();
+			const dataCasosObitos = await responseData.json();
 			let datasets = [];
 			let colorIndex = 0;
 			for (let regiao of dataCasosObitos) {
 				let dpCasosObitos = {
 					data: [],
-					backgroundColor: this.colors[colorIndex],
-					borderColor: this.colors[colorIndex],
+					backgroundColor: this.colors[colorIndex % 5],
+					borderColor: this.colors[colorIndex % 5],
 					label: regiao.regiao,
 					pointRadius: 0,
 					borderWidth: 2,
@@ -250,6 +258,10 @@ export default {
 								min: "2020-01-31",
 								max: "2020-06-20",
 							},
+							scaleLabel: {
+								display: true,
+								labelString: "Data",
+							},
 						},
 					],
 					yAxes: [
@@ -266,6 +278,10 @@ export default {
 							// ticks: {
 							// 	max: max,
 							// },
+							scaleLabel: {
+								display: true,
+								labelString: "# de óbitos",
+							},
 						},
 					],
 				},
