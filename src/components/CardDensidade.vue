@@ -10,7 +10,6 @@
 			<v-card-actions>
 				<v-autocomplete
 					:loading="quering"
-					deletableChips
 					v-model="value"
 					:items="items"
 					chips
@@ -131,6 +130,24 @@ export default {
 				display: true,
 				text: "Pessoas por domicílio",
 			},
+			scales: {
+				xAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Bairros",
+						},
+					}
+				],
+				yAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Pessoas por domicílio",
+						},
+					}
+				]
+			}
 		};
 		this.dadosDensidade = {
 			labels: labels,

@@ -49,8 +49,9 @@
 			</v-card-text>
 			<v-row no-gutters>
 				<v-btn
-					style="left: 35%;"
+					style="left: 38%; width:120px"
 					v-if="plot"
+					:disabled="quering"
 					v-show="loaded"
 					color="green lighten-1"
 					small
@@ -60,8 +61,9 @@
 					casos novos
 				</v-btn>
 				<v-btn
-					style="left: 35%;"
+					style="left: 38%; width:120px"
 					v-if="!plot"
+					:disabled="quering"
 					v-show="loaded"
 					color="red lighten-1"
 					small
@@ -80,7 +82,7 @@
 			/>
 			<v-card-actions>
 				<v-autocomplete
-					deletableChips
+					:loading="quering"
 					v-model="value"
 					:items="items"
 					chips
@@ -167,6 +169,7 @@ export default {
 		janela: false,
 		datasetCasos: [],
 		datasetObitos: [],
+		quering: false,
 		plot: false,
 		fetchData: null,
 		casosTotais: null,
@@ -316,7 +319,7 @@ export default {
 					{
 						scaleLabel: {
 							display: true,
-							labelString: "# de óbitos / casos novos",
+							labelString: "# de óbitos novos",
 						},
 					}
 				]
@@ -386,6 +389,7 @@ export default {
 	},
 	watch: {
 		value: async function() {
+			this.quering = true;
 			const response = await fetch(
 				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
 			);
@@ -484,10 +488,16 @@ export default {
 			this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos.$numberInt;
 			this.casosTotais = dadosDaRegiao[0].data[indexView].casosAcumulado.$numberInt;
 			this.obitosTotais = dadosDaRegiao[0].data[indexView].obitosAcumulado.$numberInt;
+			this.quering = false;
 		},
 		plot: function() {
-			const ds = this.plot ? this.datasetCasos : this.datasetObitos;
-			this.chartData.datasets = ds;
+			if (this.plot) {
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "# de casos novos"
+				this.chartData.datasets = this.datasetCasos
+			} else {
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "# de óbitos novos"
+				this.chartData.datasets = this.datasetObitos
+			}
 		},
 		state: function(a) {
 			this.value = a

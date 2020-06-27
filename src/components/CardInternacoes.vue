@@ -28,7 +28,7 @@
 				color="green lighten-1"
 				absolute
 				:disabled="quering"
-				style="left: 40%; bottom: 80%; width: 120px"
+				style="left: 37%; bottom: 80%; width: 120px"
 				small
 				@click="selectEnfUti = !selectEnfUti"
 			>
@@ -40,7 +40,7 @@
 				color="red lighten-1"
 				absolute
 				:disabled="quering"
-				style="left: 40%; bottom: 80%; width: 120px"
+				style="left: 37%; bottom: 80%; width: 120px"
 				small
 				@click="selectEnfUti = !selectEnfUti"
 			>

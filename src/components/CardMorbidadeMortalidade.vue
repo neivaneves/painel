@@ -1,66 +1,46 @@
 <template>
 	<v-skeleton-loader :loading="!loaded" height="400" type="card-heading, card">
 		<v-card>
-			<v-card-text>
-				<v-row>
+			<v-card-text style="padding-bottom: 0px;">
+				<v-row no-gutters>
 					<v-col>
-						<v-btn
-							style="width: 240px; margin: 10px; margin-bottom: 0px"
-							x-large
-							v-show="loaded"
-							v-bind:color="colors[0]"
-							top
-							right
+						<div
 							@click="changeDataset(colors, 0)"
 						>
 							Incidência:
-							<span class="nC">
+							<p class="nC">
 								{{ coef.incidencia }}
-							</span>
-						</v-btn>
-						<v-btn
-							style="width: 240px; margin: 10px; margin-bottom: 0px"
-							x-large
-							v-show="loaded"
-							v-bind:color="colors[1]"
-							top
-							right
+								<span class="sub">/100000</span>
+							</p>
+						</div>
+						<div
 							@click="changeDataset(colors, 1)"
 						>
 							Prevalência:
-							<span class="nC">
+							<p class="nC">
 								{{ coef.prevalencia }}
-							</span>
-						</v-btn>
+								<span class="sub">/100000</span>
+							</p>
+						</div>
 					</v-col>
 					<v-spacer></v-spacer>
 					<v-col>
-						<v-btn
-							style="width: 240px; margin: 10px; margin-bottom: 0px"
-							x-large
-							v-show="loaded"
-							v-bind:color="colors[2]"
-							top
-							right
-							@click="changeDataset(colors, 2)"
-						>
-							Mortalidade:
-							<span class="nC"> {{ coef.mortalidade }} </span>
-						</v-btn>
-						<v-btn
-							style="width: 240px; margin: 10px; margin-bottom: 0px"
-							x-large
-							v-show="loaded"
-							v-bind:color="colors[3]"
-							top
-							right
+						<div
 							@click="changeDataset(colors, 3)"
 						>
+							Mortalidade:
+							<p class="nC"> {{ coef.mortalidade }} 
+								<span class="sub">/1000</span>								
+							</p>
+						</div>
+						<div
+							@click="changeDataset(colors, 2)"
+						>
 							Letalidade:
-							<span class="nC">
+							<p class="nC">
 								{{ coef.letalidade }}%
-							</span>
-						</v-btn>
+							</p>
+						</div>
 					</v-col>
 				</v-row>
 			</v-card-text>
@@ -73,9 +53,18 @@
 			<v-card-actions>
 				<v-autocomplete
 					:loading="quering"
-					deletableChips
 					v-model="value"
 					:items="items"
+					chips
+					solo
+					hide-details
+					item-text="label"
+				>
+				</v-autocomplete>
+				<v-autocomplete
+					:loading="quering"
+					v-model="valueDs"
+					:items="itemsDs"
 					chips
 					solo
 					hide-details
@@ -128,6 +117,8 @@ export default {
 		colors: ["#ba4a4f", "grey", "grey", "grey"],
 		value: "NITEROI",
 		items: null,
+		itemsDs: ["INCIDÊNCIA", "PREVALÊNCIA", "MORTALIDADE", "LETALIDADE"],
+		valueDs: "INCIDÊNCIA",
 		fetchData: null,
 		quering: false,
 		overlay: false,
@@ -217,7 +208,19 @@ export default {
 						time: {
 							unit: "month",
 						},
+						scaleLabel: {
+							display: true,
+							labelString: "Data",
+						},
 					},
+				],
+				yAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Incidência",
+						},
+					}
 				],
 			},
 			maintainAspectRatio: false,
@@ -232,6 +235,22 @@ export default {
     watch: {
 		state: function(a) {
 			this.value = a
+		},
+		valueDs: function (val) {
+			switch (val) {
+				case "INCIDÊNCIA":
+					this.changeDataset(this.colors, 0)
+					break
+				case "PREVALÊNCIA":
+					this.changeDataset(this.colors, 1)
+					break
+				case "MORTALIDADE":
+					this.changeDataset(this.colors, 3)
+					break
+				case "LETALIDADE":
+					this.changeDataset(this.colors, 2)
+					break
+			}
 		},
         value: async function () {
         this.quering = true;
@@ -301,6 +320,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Incidência"
 			} else if (bIndex === 1) {
 				for (let regiao of this.fetchData) {
 					let dpCoeficientes = {
@@ -327,6 +347,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Prevalência"
 			} else if (bIndex === 2) {
 				for (let regiao of this.fetchData) {
 					let dpCoeficientes = {
@@ -353,6 +374,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Letalidade"
 			} else {
 				for (let regiao of this.fetchData) {
 					let dpCoeficientes = {
@@ -379,6 +401,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Mortalidade"
 			}
         this.quering = false;
         }
@@ -416,6 +439,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Incidência"
 			} else if (bIndex === 1) {
 				for (let regiao of this.fetchData) {
 					let dpCoeficientes = {
@@ -442,6 +466,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Prevalênca"
 			} else if (bIndex === 2) {
 				for (let regiao of this.fetchData) {
 					let dpCoeficientes = {
@@ -468,6 +493,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Letalidade"
 			} else {
 				for (let regiao of this.fetchData) {
 					let dpCoeficientes = {
@@ -494,6 +520,7 @@ export default {
 				this.chartData = {
 					datasets: datasets,
 				};
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "Mortalidade"
 			}
 			this.loaded = true;
 		},
@@ -510,6 +537,11 @@ export default {
 	letter-spacing: 0.0073529412em !important;
 	font-family: "Roboto", sans-serif !important;
 }
+.sub {
+	color: grey;
+	font-size: 0.6rem !important;
+}
+
 .v-text-field {
 	padding-top: 0;
 }

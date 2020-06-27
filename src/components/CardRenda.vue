@@ -10,7 +10,6 @@
 			<v-card-actions>
 				<v-autocomplete
 					:loading="quering"
-					deletableChips
 					v-model="value"
 					:items="items"
 					chips
@@ -126,6 +125,24 @@ export default {
 			maintainAspectRatio: false,
 			legend: {
 				labels: false,
+			},
+			scales: {
+				xAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Bairros",
+						},
+					},
+				],
+				yAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: "Renda média",
+						},
+					}
+				]
 			},
 		};
 		this.rendaMed = {

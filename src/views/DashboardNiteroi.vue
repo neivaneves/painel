@@ -14,9 +14,12 @@
 				<CardIsolamento />
 			</v-col>
 			<v-col :cols="12" :md="4" >
-				<CardCasosObitos />
+				<CardObitosNiteroi />
 			</v-col>
-			<v-col :cols="12" :md="8" >
+			<v-col :cols="12" :md="4" >
+				<CardCasosNiteroi />
+			</v-col>
+			<v-col :cols="12" :md="4" >
 				<CardMorbidadeMortalidade />
 			</v-col>
 			<v-col :cols="12" :md="4" >
@@ -37,7 +40,8 @@ import CardDistRisco from "../components/CardDistRisco"
 import CardBandeiras from "../components/CardBandeiras";
 import CardIsolamento from "../components/CardIsolamento";
 import CardRecentesNiteroi from "../components/CardRecentesNiteroi"
-import CardCasosObitos from "../components/CardCasosObitos"
+import CardCasosNiteroi from "../components/CardCasosNiteroi"
+import CardObitosNiteroi from "../components/CardObitosNiteroi"
 import CardMorbidadeMortalidade from "../components/CardMorbidadeMortalidade"
 import CardDensidade from "../components/CardDensidade"
 import CardRenda from "../components/CardRenda"
@@ -49,7 +53,8 @@ export default {
 		CardBandeiras,
 		CardIsolamento,
 		CardRecentesNiteroi,
-		CardCasosObitos,
+		CardCasosNiteroi,
+		CardObitosNiteroi,
 		CardMorbidadeMortalidade,
 		CardRenda,
 		CardDensidade,

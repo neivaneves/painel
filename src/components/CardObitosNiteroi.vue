@@ -87,7 +87,7 @@
 import ChartComponent from "./ChartComponent";
 
 export default {
-	name: "CardCasosObitos",
+	name: "CardObitosNiteroi",
 	components: {
 		ChartComponent,
 	},
@@ -128,7 +128,7 @@ export default {
 				fill: false,
 			};
 			for (let dia of regiao.data) {
-				let nI = parseInt(dia.casosAcumulado.$numberInt);
+				let nI = parseInt(dia.obitosAcumulado.$numberInt);
 				dpCasosObitos.data.push({
 					x: dia.dia,
 					y: nI,
@@ -144,7 +144,7 @@ export default {
 		this.chartOptions = {
 			title: {
 				display: true,
-				text: "Casos e Óbitos acumulados",
+				text: "Óbitos acumulados",
 			},
 			scales: {
 				xAxes: [
@@ -229,7 +229,7 @@ export default {
 					fill: false,
 				};
 				for (let dia of regiao.data) {
-					let nI = parseInt(dia.casosAcumulado.$numberInt);
+					let nI = parseInt(dia.obitosAcumulado.$numberInt);
 					dpCasosObitos.data.push({
 						x: dia.dia,
 						y: nI,
@@ -245,7 +245,7 @@ export default {
 			this.chartOptions = {
 				title: {
 					display: true,
-					text: "Casos e Óbitos acumulados",
+					text: "Óbitos acumulados",
 				},
 				scales: {
 					xAxes: [
