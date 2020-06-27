@@ -16,19 +16,33 @@
 				:options="options"
 				@click="select(jsonBairros.properties.nome)"
 			/>
+			<l-control position="bottomright">
+				<v-card>
+					<v-card-text style="padding: 10px; padding-bottom: 5px;">
+						<p class="leg">
+							Risco:
+						</p>
+						<p class="leg"><v-avatar color="#e31a1c" size="15" /> Altíssimo</p>
+						<p class="leg"><v-avatar color="#fd8d3c" size="15" /> Alto</p>
+						<p class="leg"><v-avatar color="#fecc5c" size="15" /> Médio</p>
+						<p class="leg"><v-avatar color="#ffffb2" size="15" /> Baixo</p>
+					</v-card-text>
+				</v-card>
+			</l-control>
 		</l-map>
 	</div>
 </template>
 
 <script>
 import { latLng } from "leaflet";
-import { LMap, LTileLayer, LGeoJson } from "vue2-leaflet";
+import { LMap, LTileLayer, LGeoJson, LControl } from "vue2-leaflet";
 
 export default {
-	name: "Example",
+	name: "MapBandeirasComponent",
 	components: {
 		LMap,
 		LTileLayer,
+		LControl,
 		LGeoJson,
 	},
 	props: {
@@ -40,7 +54,7 @@ export default {
 	data() {
 		return {
 			zoom: 12,
-			center: latLng(-22.92235, -43.067951),
+			center: latLng(-22.92235, -43.05551),
 			url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 			attribution:
 				'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -88,3 +102,11 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+.leg {
+	margin-bottom: 5px;
+	font-size: 0.75rem !important;
+	letter-spacing: 0.0103529412em !important;
+}
+</style>

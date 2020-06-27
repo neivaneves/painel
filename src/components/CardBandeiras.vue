@@ -133,7 +133,7 @@ export default {
 				? "#fd8d3c"
 				: d > 1
 				? "#fecc5c" //mais claro
-				: "ffffb2";
+				: "#ffffb2";
 		},
 	},
 	computed: {
