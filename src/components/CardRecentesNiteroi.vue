@@ -1,52 +1,71 @@
 <template>
-	<v-skeleton-loader
-		:loading="!loaded"
-		height="400"
-		type="card-heading, card"
-	>
+	<v-skeleton-loader :loading="!loaded" height="400" type="card-heading, card">
 		<v-card>
-			<v-card-text v-if="!janela">
-				<div>Numero total de casos:</div>
-				<p class="nC">
-					{{ casosTotais }}
-					<v-chip v-if="this.continuaIgual(casosNovos)">
-						<v-avatar>
-							<v-icon>remove_circle</v-icon>
-						</v-avatar>
-					</v-chip>
-					<v-chip color="red lighten-1" v-else>
-						<v-avatar left>
-							<v-icon>arrow_circle_up</v-icon>
-						</v-avatar>
-						{{ casosNovos }}
-					</v-chip>
-				</p>
-				<div>Numero total de óbitos:</div>
-				<p class="nC">
-					{{ obitosTotais }}
-					<v-chip v-if="this.continuaIgual(obitosNovos)">
-						<v-avatar>
-							<v-icon>remove_circle</v-icon>
-						</v-avatar>
-					</v-chip>
-					<v-chip color="red lighten-1" v-else>
-						<v-avatar left>
-							<v-icon>arrow_circle_up</v-icon>
-						</v-avatar>
-						{{ obitosNovos }}
-					</v-chip>
-				</p>
-			</v-card-text>
-			<v-card-text v-else>
-				<div>Numero total de casos:</div>
-				<p class="nC">
-					{{ casosTotais }}
-				</p>
-				<div>Numero total de óbitos:</div>
-				<p class="nC">
-					{{ obitosTotais }}
-				</p>
-			</v-card-text>
+			<v-row no-gutters>
+				<v-col>
+					<v-card-text v-if="!janela">
+						<div>Número total de casos:</div>
+						<p class="nC">
+							{{ casosTotais }}
+							<v-chip v-if="this.continuaIgual(casosNovos)">
+								<v-avatar>
+									<v-icon>remove_circle</v-icon>
+								</v-avatar>
+							</v-chip>
+							<v-chip color="red lighten-1" v-else>
+								<v-avatar left>
+									<v-icon>arrow_circle_up</v-icon>
+								</v-avatar>
+								{{ casosNovos }}
+							</v-chip>
+						</p>
+						<div>Número total de óbitos:</div>
+						<p class="nC">
+							{{ obitosTotais }}
+							<v-chip v-if="this.continuaIgual(obitosNovos)">
+								<v-avatar>
+									<v-icon>remove_circle</v-icon>
+								</v-avatar>
+							</v-chip>
+							<v-chip color="red lighten-1" v-else>
+								<v-avatar left>
+									<v-icon>arrow_circle_up</v-icon>
+								</v-avatar>
+								{{ obitosNovos }}
+							</v-chip>
+						</p>
+					</v-card-text>
+					<v-card-text v-else>
+						<div>Número total de casos:</div>
+						<p class="nC">
+							{{ casosTotais }}
+						</p>
+						<div>Número total de óbitos:</div>
+						<p class="nC">
+							{{ obitosTotais }}
+						</p>
+					</v-card-text>
+				</v-col>
+				<v-col>
+					<v-card-text v-if="!janela">
+						<div>Recuperados:</div>
+						<p class="nC">
+							{{ recuperadosTotais }}
+							<v-chip v-if="this.continuaIgual(casosNovos)">
+								<v-avatar>
+									<v-icon>remove_circle</v-icon>
+								</v-avatar>
+							</v-chip>
+							<v-chip color="green lighten-1" v-else>
+								<v-avatar left>
+									<v-icon>arrow_circle_up</v-icon>
+								</v-avatar>
+								{{ recuperadosNovos }}
+							</v-chip>
+						</p>
+					</v-card-text>
+				</v-col>
+			</v-row>
 			<v-row no-gutters>
 				<v-btn
 					style="left: 38%; width:120px"
@@ -70,7 +89,7 @@
 					absolute
 					@click="plot = !plot"
 				>
-					obitos novos
+					óbitos novos
 				</v-btn>
 			</v-row>
 			<ChartComponent
@@ -171,6 +190,8 @@ export default {
 		datasetObitos: [],
 		quering: false,
 		plot: false,
+		recuperadosTotais: null,
+		recuperadosNovos: null,
 		fetchData: null,
 		casosTotais: null,
 		casosNovos: null,
@@ -222,7 +243,7 @@ export default {
 				pointHitRadius: 10,
 				fill: false,
 			},
-        ];
+		];
 		this.datasetObitos = [
 			{
 				data: dataObitos,
@@ -287,12 +308,18 @@ export default {
 		this.chartData = {
 			datasets: ds,
 		};
-        const indexView = dadosDaRegiao[0].data.length - 1;
+		const indexView = dadosDaRegiao[0].data.length - 1;
 
 		this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos.$numberInt;
 		this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos.$numberInt;
-		this.casosTotais = dadosDaRegiao[0].data[indexView].casosAcumulado.$numberInt;
-		this.obitosTotais = dadosDaRegiao[0].data[indexView].obitosAcumulado.$numberInt;
+		this.casosTotais =
+			dadosDaRegiao[0].data[indexView].casosAcumulado.$numberInt;
+		this.obitosTotais =
+			dadosDaRegiao[0].data[indexView].obitosAcumulado.$numberInt;
+		this.recuperadosTotais =
+			dadosDaRegiao[0].data[indexView].recuperadosAcumulado.$numberInt;
+		this.recuperadosNovos =
+			dadosDaRegiao[0].data[indexView].recuperadosNovos.$numberInt;
 		this.dates.push(dadosDaRegiao[0].data[0].dia);
 		this.dates.push(dadosDaRegiao[0].data[indexView].dia);
 		this.min = this.dates[0];
@@ -321,8 +348,8 @@ export default {
 							display: true,
 							labelString: "# de óbitos novos",
 						},
-					}
-				]
+					},
+				],
 			},
 			legend: {
 				labels: false,
@@ -343,11 +370,15 @@ export default {
 				this.janela = false;
 				const indexCasosF = this.fetchData.data.findIndex(
 					(a) => a.dia == dates[0]
-                );
-				const casosFNovos = this.fetchData.data[indexCasosF].casosNovos.$numberInt;
-				const casosF = this.fetchData.data[indexCasosF].casosAcumulado.$numberInt;
-				const obitosFNovos = this.fetchData.data[indexCasosF].obitosNovos.$numberInt;
-				const obitosF = this.fetchData.data[indexCasosF].obitosAcumulado.$numberInt;
+				);
+				const casosFNovos = this.fetchData.data[indexCasosF].casosNovos
+					.$numberInt;
+				const casosF = this.fetchData.data[indexCasosF].casosAcumulado
+					.$numberInt;
+				const obitosFNovos = this.fetchData.data[indexCasosF].obitosNovos
+					.$numberInt;
+				const obitosF = this.fetchData.data[indexCasosF].obitosAcumulado
+					.$numberInt;
 				this.casosTotais = casosF;
 				this.obitosTotais = obitosF;
 				this.casosNovos = casosFNovos;
@@ -359,10 +390,14 @@ export default {
 				const indexCasosI = this.fetchData.data.findIndex(
 					(a) => a.dia == dates[0]
 				);
-				const casosINovos = this.fetchData.data[indexCasosI].casosNovos.$numberInt;
-				const casosI = this.fetchData.data[indexCasosI].casosAcumulado.$numberInt;
-				const obitosINovos = this.fetchData.data[indexCasosI].obitosNovos.$numberInt;
-				const obitosI = this.fetchData.data[indexCasosI].obitosAcumulado.$numberInt;
+				const casosINovos = this.fetchData.data[indexCasosI].casosNovos
+					.$numberInt;
+				const casosI = this.fetchData.data[indexCasosI].casosAcumulado
+					.$numberInt;
+				const obitosINovos = this.fetchData.data[indexCasosI].obitosNovos
+					.$numberInt;
+				const obitosI = this.fetchData.data[indexCasosI].obitosAcumulado
+					.$numberInt;
 				const indexCasosF = this.fetchData.data.findIndex(
 					(a) => a.dia == dates[1]
 				);
@@ -485,22 +520,31 @@ export default {
 			this.chartData.datasets = ds;
 			const indexView = dadosDaRegiao[0].data.length - 1;
 			this.casosNovos = dadosDaRegiao[0].data[indexView].casosNovos.$numberInt;
-			this.obitosNovos = dadosDaRegiao[0].data[indexView].obitosNovos.$numberInt;
-			this.casosTotais = dadosDaRegiao[0].data[indexView].casosAcumulado.$numberInt;
-			this.obitosTotais = dadosDaRegiao[0].data[indexView].obitosAcumulado.$numberInt;
+			this.obitosNovos =
+				dadosDaRegiao[0].data[indexView].obitosNovos.$numberInt;
+			this.casosTotais =
+				dadosDaRegiao[0].data[indexView].casosAcumulado.$numberInt;
+			this.recuperadosNovos =
+				dadosDaRegiao[0].data[indexView].recuperadosNovos.$numberInt;
+			this.recuperadosTotais =
+				dadosDaRegiao[0].data[indexView].recuperadosAcumulado.$numberInt;
+			this.obitosTotais =
+				dadosDaRegiao[0].data[indexView].obitosAcumulado.$numberInt;
 			this.quering = false;
 		},
 		plot: function() {
 			if (this.plot) {
-				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "# de casos novos"
-				this.chartData.datasets = this.datasetCasos
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString =
+					"# de casos novos";
+				this.chartData.datasets = this.datasetCasos;
 			} else {
-				this.chartOptions.scales.yAxes[0].scaleLabel.labelString = "# de óbitos novos"
-				this.chartData.datasets = this.datasetObitos
+				this.chartOptions.scales.yAxes[0].scaleLabel.labelString =
+					"# de óbitos novos";
+				this.chartData.datasets = this.datasetObitos;
 			}
 		},
 		state: function(a) {
-			this.value = a
+			this.value = a;
 		},
 	},
 	computed: {
@@ -511,7 +555,7 @@ export default {
 			return a.join(" a ");
 		},
 		state() {
-			return this.$store.state.regiao
+			return this.$store.state.regiao;
 		},
 	},
 };

@@ -23,7 +23,11 @@
 					</v-list>
 				</v-col>
 				<v-col :cols="12" :sm="8" dense>
-					<MapBandeirasComponent v-if="loaded" :bairros="bairros" />
+					<MapBandeirasComponent
+						v-if="loaded"
+						:bairros="bairros"
+						:legenda="legenda"
+					/>
 				</v-col>
 			</v-row>
 			<v-card-actions style="padding: 0px">
@@ -81,6 +85,15 @@ export default {
 		loaded: false,
 		snackbar: false,
 		timeout: 5000,
+		legenda: {
+			titulo: "Risco:",
+			tiers: [
+				{ tier: "Altíssimo", cor: "#e31a1c" },
+				{ tier: "Alto", cor: "#fd8d3c" },
+				{ tier: "Médio", cor: "#fecc5c" },
+				{ tier: "Baixo", cor: "#ffffb2" },
+			],
+		},
 		overlay: false,
 		rank: [],
 		bairros: null,
@@ -146,14 +159,14 @@ export default {
 			for (let feature of this.bairros.features) {
 				if (feature.properties.nome === a) {
 					feature.properties.style.color = "#3d3d3d";
-					feature.properties.style.dashArray = "0",
-					feature.properties.style.weight = 4;
+					(feature.properties.style.dashArray = "0"),
+						(feature.properties.style.weight = 4);
 					feature.properties.style.fillOpacity = 0.7;
 				} else {
 					feature.properties.style.color = "white";
 					feature.properties.style.weight = 1;
-					feature.properties.style.dashArray = "3",
-					feature.properties.style.fillOpacity = 0.5;
+					(feature.properties.style.dashArray = "3"),
+						(feature.properties.style.fillOpacity = 0.5);
 				}
 			}
 		},

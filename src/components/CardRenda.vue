@@ -62,7 +62,7 @@ export default {
 		chartOptions: null,
 		quering: false,
 		overlay: false,
-		value: "NITEROI",
+		value: "MORRO DO ESTADO",
 		items: null,
 	}),
 	components: {
@@ -83,7 +83,9 @@ export default {
 		for (let regiao of responseProps) {
 			top.push({
 				regiao: regiao.regiao,
-				densidade: parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(2),
+				densidade: parseFloat(
+					regiao.props.rendaMedia.$numberDouble
+				).toFixed(2),
 			});
 		}
 		top.sort((a, b) =>
@@ -96,7 +98,9 @@ export default {
 			let dV = null;
 			for (let regiao of responseProps) {
 				if (regiao.regiao === this.value) {
-					dV = parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(2);
+					dV = parseFloat(
+						regiao.props.rendaMedia.$numberDouble
+					).toFixed(2);
 					break;
 				}
 			}
@@ -118,13 +122,13 @@ export default {
 			}
 		}
 		this.chartOptions = {
-			title: {
-				display: true,
-				text: "Renda média",
-			},
 			maintainAspectRatio: false,
 			legend: {
 				labels: false,
+			},
+			title: {
+				display: true,
+				text: "Renda Média",
 			},
 			scales: {
 				xAxes: [
@@ -137,12 +141,15 @@ export default {
 				],
 				yAxes: [
 					{
+						ticks: {
+							beginAtZero: true,
+						},
 						scaleLabel: {
 							display: true,
 							labelString: "Renda média",
 						},
-					}
-				]
+					},
+				],
 			},
 		};
 		this.rendaMed = {
@@ -177,9 +184,9 @@ export default {
 			for (let regiao of responseProps) {
 				top.push({
 					regiao: regiao.regiao,
-					densidade: parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(
-						2
-					),
+					densidade: parseFloat(
+						regiao.props.rendaMedia.$numberDouble
+						).toFixed(2),
 				});
 			}
 			top.sort((a, b) =>
@@ -192,7 +199,9 @@ export default {
 				let dV = null;
 				for (let regiao of responseProps) {
 					if (regiao.regiao === this.value) {
-						dV = parseFloat(regiao.props.rendaMedia.$numberDouble).toFixed(2);
+						dV = parseFloat(
+							regiao.props.rendaMedia.$numberDouble
+							).toFixed(2);
 						break;
 					}
 				}
@@ -213,16 +222,6 @@ export default {
 					cores.push("grey");
 				}
 			}
-			this.chartOptions = {
-				title: {
-					display: true,
-					text: "Renda média",
-				},
-				maintainAspectRatio: false,
-				legend: {
-					labels: false,
-				},
-			};
 			this.rendaMed = {
 				labels: labels,
 				datasets: [

@@ -14,22 +14,28 @@
 				<CardIsolamento />
 			</v-col>
 			<v-col :cols="12" :md="4" >
-				<CardObitosNiteroi />
+				<CardMorbidadeMortalidade />
+			</v-col>
+			<v-col :cols="12" :md="8" >
+				<CardTempoParaDobrarNiteroi />
 			</v-col>
 			<v-col :cols="12" :md="4" >
 				<CardCasosNiteroi />
 			</v-col>
 			<v-col :cols="12" :md="4" >
-				<CardMorbidadeMortalidade />
+				<CardObitosNiteroi />
 			</v-col>
 			<v-col :cols="12" :md="4" >
 				<CardInternacoes />
 			</v-col>
 			<v-col :cols="12" :md="4" >
+				<CardRenda />
+			</v-col>
+			<v-col :cols="12" :md="4" >
 				<CardDensidade />
 			</v-col>
 			<v-col :cols="12" :md="4" >
-				<CardRenda />
+				<CardPopIdosa />
 			</v-col>
 		</v-row>
 	</v-container>
@@ -46,6 +52,8 @@ import CardMorbidadeMortalidade from "../components/CardMorbidadeMortalidade"
 import CardDensidade from "../components/CardDensidade"
 import CardRenda from "../components/CardRenda"
 import CardInternacoes from "../components/CardInternacoes"
+import CardTempoParaDobrarNiteroi from "../components/CardTempoParaDobrarNiteroi"
+import CardPopIdosa from "../components/CardPopIdosa"
 
 export default {
 	name: "DashboardNiteroi",
@@ -54,9 +62,11 @@ export default {
 		CardIsolamento,
 		CardRecentesNiteroi,
 		CardCasosNiteroi,
+		CardTempoParaDobrarNiteroi,
 		CardObitosNiteroi,
 		CardMorbidadeMortalidade,
 		CardRenda,
+		CardPopIdosa,
 		CardDensidade,
 		CardInternacoes,
 		CardDistRisco,

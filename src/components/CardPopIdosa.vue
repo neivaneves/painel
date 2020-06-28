@@ -4,7 +4,7 @@
 			<BarChart
 				v-if="loaded"
 				style="height: 445px;"
-				:chartData="dadosDensidade"
+				:chartData="popI"
 				:chartOptions="chartOptions"
 			/>
 			<v-card-actions>
@@ -58,11 +58,11 @@ import BarChart from "./BarChart";
 export default {
 	data: () => ({
 		loaded: false,
-		dadosDensidade: null,
+		popI: null,
 		chartOptions: null,
 		quering: false,
 		overlay: false,
-		value: "MORRO DO ESTADO",
+		value: "ICARAI",
 		items: null,
 	}),
 	components: {
@@ -79,28 +79,26 @@ export default {
 			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=props&arg2=a`
 		);
 		const responseProps = await response.json();
+		const nIndex = responseProps.findIndex((x) => x.regiao === "NITEROI");
+		responseProps.splice(nIndex, 1);
 		let top = [];
 		for (let regiao of responseProps) {
 			top.push({
 				regiao: regiao.regiao,
-				densidade: parseFloat(
-					regiao.props.pessoasPorDomicilio.$numberDouble
-				).toFixed(2),
+				densidade: parseFloat(regiao.props.popIdosa.$numberInt).toFixed(2),
 			});
 		}
 		top.sort((a, b) =>
 			parseFloat(a.densidade) > parseFloat(b.densidade) ? 1 : -1
 		);
-		top.splice(0, 48);
+		top.splice(0, 47);
 		let iValue = top.findIndex((x) => x.regiao === this.value);
 		if (iValue === -1) {
 			top.splice(0, 1);
 			let dV = null;
 			for (let regiao of responseProps) {
 				if (regiao.regiao === this.value) {
-					dV = parseFloat(
-						regiao.props.pessoasPorDomicilio.$numberDouble
-					).toFixed(2);
+					dV = parseFloat(regiao.props.popIdosa.$numberInt).toFixed(2);
 					break;
 				}
 			}
@@ -128,7 +126,7 @@ export default {
 			},
 			title: {
 				display: true,
-				text: "Pessoas por domicílio",
+				text: "População idosa",
 			},
 			scales: {
 				xAxes: [
@@ -146,17 +144,17 @@ export default {
 						},
 						scaleLabel: {
 							display: true,
-							labelString: "Pessoas por domicílio",
+							labelString: "# de pessoas acima de 60 anos",
 						},
 					},
 				],
 			},
 		};
-		this.dadosDensidade = {
+		this.popI = {
 			labels: labels,
 			datasets: [
 				{
-					label: "Pessoas por domicílio",
+					label: "População idosa",
 					data: data,
 					backgroundColor: cores,
 					borderColor: cores,
@@ -180,28 +178,26 @@ export default {
 				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=props&arg2=a`
 			);
 			const responseProps = await response.json();
+			const nIndex = responseProps.findIndex((x) => x.regiao === "NITEROI");
+			responseProps.splice(nIndex, 1);
 			let top = [];
 			for (let regiao of responseProps) {
 				top.push({
 					regiao: regiao.regiao,
-					densidade: parseFloat(
-						regiao.props.pessoasPorDomicilio.$numberDouble
-					).toFixed(2),
+					densidade: parseFloat(regiao.props.popIdosa.$numberInt).toFixed(2),
 				});
 			}
 			top.sort((a, b) =>
 				parseFloat(a.densidade) > parseFloat(b.densidade) ? 1 : -1
 			);
-			top.splice(0, 48);
+			top.splice(0, 47);
 			let iValue = top.findIndex((x) => x.regiao === this.value);
 			if (iValue === -1) {
 				top.splice(0, 1);
 				let dV = null;
 				for (let regiao of responseProps) {
 					if (regiao.regiao === this.value) {
-						dV = parseFloat(
-							regiao.props.pessoasPorDomicilio.$numberDouble
-						).toFixed(2);
+						dV = parseFloat(regiao.props.popIdosa.$numberInt).toFixed(2);
 						break;
 					}
 				}
@@ -222,11 +218,11 @@ export default {
 					cores.push("grey");
 				}
 			}
-			this.dadosDensidade = {
+			this.popI = {
 				labels: labels,
 				datasets: [
 					{
-						label: "Pessoas por domicílio",
+						label: "População idosa",
 						data: data,
 						backgroundColor: cores,
 						borderColor: cores,

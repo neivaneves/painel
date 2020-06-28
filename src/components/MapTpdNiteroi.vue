@@ -5,24 +5,23 @@
 			v-if="showMap"
 			:zoom="zoom"
 			:center="center"
-			:options="mapOptions"
+			:options="mapOptionsTpd"
 		>
 			<l-tile-layer :url="url" :attribution="attribution" />
 			<l-geo-json
-				v-for="jsonBairros of bairros.features"
-				:key="jsonBairros.properties.nome"
-				:geojson="jsonBairros"
-				:options-style="jsonBairros.properties.style"
-				:options="options"
-				@click="select(jsonBairros.properties.nome)"
+				v-for="jsonBairrosTpd of geojson.features"
+				:key="jsonBairrosTpd.properties.nome"
+				:geojson="jsonBairrosTpd"
+				:options-style="jsonBairrosTpd.properties.style"
+				:options="optionsTpd"
 			/>
 			<l-control position="bottomright">
 				<v-card>
 					<v-card-text style="padding: 10px; padding-bottom: 5px;">
 						<p class="leg">
-							{{ legenda.titulo }}
+							{{ legendaTpd.titulo }}
 						</p>
-						<p class="leg" v-for="tier of legenda.tiers" :key="tier.tier">
+						<p class="leg" v-for="tier of legendaTpd.tiers" :key="tier.tier">
 							<v-avatar :color="tier.cor" size="15" />
 							{{ tier.tier }}
 						</p>
@@ -38,23 +37,14 @@ import { latLng } from "leaflet";
 import { LMap, LTileLayer, LGeoJson, LControl } from "vue2-leaflet";
 
 export default {
-	name: "MapBandeirasComponent",
+	name: "MapTpdNiteroi",
 	components: {
 		LMap,
 		LTileLayer,
 		LControl,
 		LGeoJson,
 	},
-	props: {
-		bairros: {
-			type: Object,
-			default: null,
-		},
-		legenda: {
-			type: Object,
-			default: null,
-		},
-	},
+	props: ["bairrosTpd", "mutation", "legendaTpd"],
 	data() {
 		return {
 			zoom: 12,
@@ -63,36 +53,35 @@ export default {
 			attribution:
 				'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 			showMap: false,
-			mapOptions: {
+			mapOptionsTpd: {
 				zoomSnap: 0.25,
 			},
-			geojson: null,
 		};
 	},
 	mounted() {
-		this.showMap = false;
-		this.geojson = this.bairros;
+        this.showMap = false;
+        this.geojson = this.bairrosTpd;
 		this.showMap = true;
 	},
 	computed: {
-		options() {
+		optionsTpd() {
 			return {
-				onEachFeature: this.onEachFeatureFunction,
+				onEachFeature: this.onEachFeatureFunctionTpd,
 			};
 		},
-		onEachFeatureFunction() {
+		onEachFeatureFunctionTpd() {
 			return (feature, layer) => {
 				layer.bindTooltip(
 					"<div>Bairro: " +
 						feature.properties.nome +
-						"</div><div>" + this.legenda.titulo + " " +
-						feature.properties.risco.toFixed(2) +
+						"</div><div>" + this.legendaTpd.titulo + " " +
+						parseInt(feature.properties.tempoParaDobrar) +
 						"</div>",
 					{ permanent: false, sticky: true }
 				);
 			};
 		},
-		// onEachFeatureFunction() {
+		// onEachFeatureFunctionTpd() {
 		// 	if (this.dados === "risco") {
 		// 		return (feature, layer) => {
 		// 			layer.bindTooltip(
@@ -118,16 +107,12 @@ export default {
 		// 	}
 		// },
 	},
-	methods: {
-		select(regiao) {
-			// console.log(regiao, this.$store)
-			this.$store.commit("select", regiao);
-		},
-	},
 	watch: {
-		bairros: function(arg) {
-			this.geojson = arg;
-		},
+		mutation: function() {
+            this.showMap = false;
+            this.geojson = this.bairrosTpd;
+            this.showMap = true;
+        },
 	},
 };
 </script>
