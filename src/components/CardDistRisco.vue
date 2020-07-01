@@ -2,7 +2,7 @@
 	<v-skeleton-loader :loading="!loaded" height="400" type="card-heading, card">
 		<v-card>
 			<ScatterPlotComponent
-				style="height: 456px;"
+				style="height: 457px;"
 				v-if="loaded"
 				:chartData="chartData"
 				:chartOptions="chartOptions"
@@ -223,6 +223,36 @@ export default {
 			},
 			maintainAspectRatio: false,
 		};
+		if (this.$store.state.regiao != "NITEROI") {
+			let a = this.$store.state.regiao
+			this.chartData.datasets.splice(0, 2);
+			this.chartData.datasets.unshift({
+				label: "",
+				data: [],
+				pointRadius: 5,
+			});
+			this.chartData.datasets.unshift({
+				label: "",
+				data: [],
+				backgroundColor: "#1c1c1c",
+				pointRadius: 8,
+			});
+			for (let regiao of this.apiR) {
+				if (regiao.regiao === a) {
+					this.chartData.datasets[0].data.push({
+						x: parseFloat(regiao.data.x.$numberDouble),
+						y: parseFloat(regiao.data.y.$numberDouble),
+						label: regiao.regiao,
+					});
+				} else {
+					this.chartData.datasets[1].data.push({
+						x: parseFloat(regiao.data.x.$numberDouble),
+						y: parseFloat(regiao.data.y.$numberDouble),
+						label: regiao.regiao,
+					});
+				}
+			}
+		}
 		this.loaded = true;
 	},
 	methods: {

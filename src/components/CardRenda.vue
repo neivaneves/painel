@@ -69,6 +69,9 @@ export default {
 		BarChart,
 	},
 	async mounted() {
+		if (this.$store.state.regiao != "NITEROI") {
+			this.value = this.$store.state.regiao
+		}
 		this.loaded = false;
 		const responseLabelsBairros = await fetch(
 			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeLabelsBairros`

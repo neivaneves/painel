@@ -100,10 +100,11 @@ export default {
 		chartOptions: null,
 		items: null,
 		colors: ["#ba4a4f", "#56ae6c", "#a24f99", "#af953c", "#6971c9"],
-		values: ["NITEROI"],
+		values: [],
 	}),
 	async mounted() {
 		this.loaded = false;
+		this.values.push(this.$store.state.regiao)
 		const responseLabelsBairros = await fetch(
 			"https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeLabelsBairros"
 		);

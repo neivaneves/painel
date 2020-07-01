@@ -135,6 +135,22 @@ export default {
 		rank.sort((a, b) => (parseFloat(a.risco) < parseFloat(b.risco) ? 1 : -1));
 		this.rank = rank;
 		this.bairros = geojsonBairros;
+		if (this.$store.state.regiao != "NITEROI") {
+			let  a = this.$store.state.regiao
+			for (let feature of this.bairros.features) {
+				if (feature.properties.nome === a) {
+					feature.properties.style.color = "#3d3d3d";
+					(feature.properties.style.dashArray = "0"),
+						(feature.properties.style.weight = 4);
+					feature.properties.style.fillOpacity = 0.7;
+				} else {
+					feature.properties.style.color = "white";
+					feature.properties.style.weight = 1;
+					(feature.properties.style.dashArray = "3"),
+						(feature.properties.style.fillOpacity = 0.5);
+				}
+			}
+		}
 		this.loaded = true;
 		this.snackbar = true;
 	},

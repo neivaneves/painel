@@ -22,6 +22,9 @@
 
 		<v-app-bar app clipped-left>
 			<v-toolbar-title>Painel</v-toolbar-title>
+			<v-spacer></v-spacer>
+			<v-btn v-if="$route.path === '/' ? true : false" to="/projecoesNiteroi" color="red lighten-1">ir para projeções: {{ value }}</v-btn>
+			<v-btn v-else to="/" color="green lighten-1">voltar aos indicadores</v-btn>
 		</v-app-bar>
 
 		<v-main>
@@ -48,12 +51,23 @@ export default {
 				route: "/brasil",
 			},
 		],
+		value: "NITERÓI",
 		drawer: true,
 		expandOnHover: true,
 		miniVariant: true,
 	}),
 	created() {
 		this.$vuetify.theme.dark = true;
+	},
+	computed: {
+		state() {
+			return this.$store.state.regiao;
+		},
+	},
+	watch: {
+		state: function(a) {
+			this.value = a;
+		},
 	},
 };
 </script>

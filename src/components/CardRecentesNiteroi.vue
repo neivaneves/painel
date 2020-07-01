@@ -51,7 +51,7 @@
 						<div>Recuperados:</div>
 						<p class="nC">
 							{{ recuperadosTotais }}
-							<v-chip v-if="this.continuaIgual(casosNovos)">
+							<v-chip v-if="this.continuaIgual(recuperadosNovos)">
 								<v-avatar>
 									<v-icon>remove_circle</v-icon>
 								</v-avatar>
@@ -200,7 +200,7 @@ export default {
 		chartOptions: null,
 		chartData: null,
 		overlay: false,
-		value: "NITEROI",
+		value: null,
 		dates: [],
 		menu: false,
 		min: null,
@@ -208,6 +208,7 @@ export default {
 	}),
 	async created() {
 		this.loaded = false;
+		this.value = this.$store.state.regiao
 		const responseLabelsBairros = await fetch(
 			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeLabelsBairros`
 		);
@@ -357,6 +358,7 @@ export default {
 			maintainAspectRatio: false,
 		};
 		this.loaded = true;
+		this.quering = false;
 	},
 	methods: {
 		continuaIgual(val) {
@@ -424,6 +426,9 @@ export default {
 	},
 	watch: {
 		value: async function() {
+			if (this.value === this.$store.state.regiao) {
+				return 1;
+			}
 			this.quering = true;
 			const response = await fetch(
 				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=data&arg2=${this.value}`
@@ -477,7 +482,7 @@ export default {
 					const dia = elt.x;
 					dataMedia.push({
 						x: dia,
-						y: med.toFixed(),
+						y: med.toFixed(3),
 					});
 					stream.pop();
 				}
@@ -501,7 +506,7 @@ export default {
 					const dia = elt.x;
 					dataMedia.push({
 						x: dia,
-						y: med.toFixed(),
+						y: med.toFixed(3),
 					});
 					stream.pop();
 				}

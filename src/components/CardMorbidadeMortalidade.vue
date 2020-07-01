@@ -115,7 +115,7 @@ export default {
 	data: () => ({
 		loaded: false,
 		colors: ["#ba4a4f", "grey", "grey", "grey"],
-		value: "NITEROI",
+		value: null,
 		items: null,
 		itemsDs: ["INCIDÊNCIA", "PREVALÊNCIA", "MORTALIDADE", "LETALIDADE"],
 		valueDs: "INCIDÊNCIA",
@@ -131,6 +131,7 @@ export default {
 	}),
 	async mounted() {
 		this.loaded = false;
+		this.value = this.$store.state.regiao
 		const responseLabelsBairros = await fetch(
 			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeLabelsBairros`
 		);
@@ -226,6 +227,7 @@ export default {
 			maintainAspectRatio: false,
 		};
 		this.loaded = true;
+		this.quering = false;
 	},
 	computed: {
 		state() {
@@ -253,6 +255,9 @@ export default {
 			}
 		},
         value: async function () {
+		if (this.value === this.$store.state.regiao) {
+			return 1;
+		}
         this.quering = true;
             const response = await fetch(
 			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=coeficientes&arg2=${this.value}`
@@ -533,13 +538,14 @@ export default {
 	color: white;
 	font-size: 2.125rem !important;
 	font-weight: 400;
+	white-space: nowrap;
 	line-height: 2.5rem;
 	letter-spacing: 0.0073529412em !important;
 	font-family: "Roboto", sans-serif !important;
 }
 .sub {
 	color: grey;
-	font-size: 0.6rem !important;
+	font-size: 0.58rem !important;
 }
 
 .v-text-field {

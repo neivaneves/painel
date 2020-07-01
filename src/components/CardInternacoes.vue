@@ -100,9 +100,10 @@ export default {
 		items: null,
 		leitos: [],
 		colors: ["#ba4a4f", "#56ae6c", "#a24f99", "#af953c", "#6971c9"],
-		values: ["NITEROI"],
+		values: [],
 	}),
 	async mounted() {
+		this.values.push(this.$store.state.regiao)
 		this.loaded = false;
 		const responseLabelsBairros = await fetch(
 			"https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeLabelsBairros"
@@ -115,7 +116,7 @@ export default {
 		);
 		const dataHosp = await responseData.json();
 		const responseLeitos = await fetch(
-			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=props&arg2=${queryData}`
+			`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=props&arg2=NITEROI`
 		);
 		const dataLeitos = await responseLeitos.json();
 		let datasets = [];
@@ -265,9 +266,9 @@ export default {
 		selectEnfUti: async function() {
 			this.quering = true;
 			this.leitos = [];
-			const queryData = "NITEROI"
+			const queryData = this.values.join(",");
 			const responseLeitos = await fetch(
-				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=props&arg2=${queryData}`
+				`https://webhooks.mongodb-stitch.com/api/client/v2.0/app/corona_vue_2-rbdzt/service/api/incoming_webhook/fakeNiteroi?arg1=props&arg2=NITEROI`
 			);
 			const dataLeitos = await responseLeitos.json();
 			for (let regiao of dataLeitos) {
